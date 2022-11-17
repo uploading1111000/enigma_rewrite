@@ -1,0 +1,6 @@
+src/solver/deutsch
+src/solver/english
+*.pyc
+*~
+*.swp
+src/solver/final4gram.json
