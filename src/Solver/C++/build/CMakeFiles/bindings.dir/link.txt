@@ -1,0 +1,3 @@
+"C:\ CMake\cmake-3.25.0-windows-x86_64\bin\cmake.exe" -E rm -f CMakeFiles\bindings.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\bindings.dir/objects.a @CMakeFiles\bindings.dir\objects1
+C:\msys64\mingw64\bin\c++.exe -shared -o bindings.cp311-win_amd64.pyd -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\bindings.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\bindings.dir\linkLibs.rsp

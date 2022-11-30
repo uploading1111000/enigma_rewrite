@@ -62,7 +62,8 @@ CMAKE_BINARY_DIR = C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/example.dir/all
+all: CMakeFiles/functions.dir/all
+all: CMakeFiles/bindings.dir/all
 all: pybind11/all
 .PHONY : all
 
@@ -71,7 +72,8 @@ preinstall: pybind11/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/example.dir/clean
+clean: CMakeFiles/functions.dir/clean
+clean: CMakeFiles/bindings.dir/clean
 clean: pybind11/clean
 .PHONY : clean
 
@@ -91,30 +93,56 @@ pybind11/clean:
 .PHONY : pybind11/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/example.dir
+# Target rules for target CMakeFiles/functions.dir
 
 # All Build rule for target.
-CMakeFiles/example.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles --progress-num=1,2 "Built target example"
-.PHONY : CMakeFiles/example.dir/all
+CMakeFiles/functions.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles --progress-num=3,4 "Built target functions"
+.PHONY : CMakeFiles/functions.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/example.dir/rule: cmake_check_build_system
+CMakeFiles/functions.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/example.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/functions.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles 0
-.PHONY : CMakeFiles/example.dir/rule
+.PHONY : CMakeFiles/functions.dir/rule
 
 # Convenience name for target.
-example: CMakeFiles/example.dir/rule
-.PHONY : example
+functions: CMakeFiles/functions.dir/rule
+.PHONY : functions
 
 # clean rule for target.
-CMakeFiles/example.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/clean
-.PHONY : CMakeFiles/example.dir/clean
+CMakeFiles/functions.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/clean
+.PHONY : CMakeFiles/functions.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/bindings.dir
+
+# All Build rule for target.
+CMakeFiles/bindings.dir/all: CMakeFiles/functions.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles --progress-num=1,2 "Built target bindings"
+.PHONY : CMakeFiles/bindings.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/bindings.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/bindings.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\CYBER\Documents\enigma_rewrite\src\Solver\C++\build\CMakeFiles 0
+.PHONY : CMakeFiles/bindings.dir/rule
+
+# Convenience name for target.
+bindings: CMakeFiles/bindings.dir/rule
+.PHONY : bindings
+
+# clean rule for target.
+CMakeFiles/bindings.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/clean
+.PHONY : CMakeFiles/bindings.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

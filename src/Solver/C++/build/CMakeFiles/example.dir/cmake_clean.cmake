@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/example.dir/example.cpp.obj"
-  "CMakeFiles/example.dir/example.cpp.obj.d"
+  "CMakeFiles/example.dir/binds.cpp.obj"
+  "CMakeFiles/example.dir/binds.cpp.obj.d"
   "example.cp311-win_amd64.pyd"
   "example.cp311-win_amd64.pyd.manifest"
   "example.pdb"

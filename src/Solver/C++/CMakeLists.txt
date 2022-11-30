@@ -2,4 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 project(Solver)
 
 add_subdirectory(pybind11)
-pybind11_add_module(example example.cpp)
+add_library(functions funcs.cpp)
+pybind11_add_module(bindings binds.cpp)
+target_link_libraries(bindings PUBLIC functions)
+target_include_directories(bindings PUBLIC
+        "${PROJECT_SOURCE_DIR}"
+        "${PROJECT_BINARY_DIR}"
+)

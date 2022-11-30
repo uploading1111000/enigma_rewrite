@@ -116,41 +116,78 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named example
+# Target rules for targets named functions
 
 # Build rule for target.
-example: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 example
-.PHONY : example
+functions: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 functions
+.PHONY : functions
 
 # fast build rule for target.
-example/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/build
-.PHONY : example/fast
+functions/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/build
+.PHONY : functions/fast
 
-example.obj: example.cpp.obj
-.PHONY : example.obj
+#=============================================================================
+# Target rules for targets named bindings
+
+# Build rule for target.
+bindings: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 bindings
+.PHONY : bindings
+
+# fast build rule for target.
+bindings/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/build
+.PHONY : bindings/fast
+
+binds.obj: binds.cpp.obj
+.PHONY : binds.obj
 
 # target to build an object file
-example.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/example.cpp.obj
-.PHONY : example.cpp.obj
+binds.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/binds.cpp.obj
+.PHONY : binds.cpp.obj
 
-example.i: example.cpp.i
-.PHONY : example.i
+binds.i: binds.cpp.i
+.PHONY : binds.i
 
 # target to preprocess a source file
-example.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/example.cpp.i
-.PHONY : example.cpp.i
+binds.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/binds.cpp.i
+.PHONY : binds.cpp.i
 
-example.s: example.cpp.s
-.PHONY : example.s
+binds.s: binds.cpp.s
+.PHONY : binds.s
 
 # target to generate assembly for a file
-example.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/example.cpp.s
-.PHONY : example.cpp.s
+binds.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bindings.dir\build.make CMakeFiles/bindings.dir/binds.cpp.s
+.PHONY : binds.cpp.s
+
+funcs.obj: funcs.cpp.obj
+.PHONY : funcs.obj
+
+# target to build an object file
+funcs.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/funcs.cpp.obj
+.PHONY : funcs.cpp.obj
+
+funcs.i: funcs.cpp.i
+.PHONY : funcs.i
+
+# target to preprocess a source file
+funcs.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/funcs.cpp.i
+.PHONY : funcs.cpp.i
+
+funcs.s: funcs.cpp.s
+.PHONY : funcs.s
+
+# target to generate assembly for a file
+funcs.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\functions.dir\build.make CMakeFiles/functions.dir/funcs.cpp.s
+.PHONY : funcs.cpp.s
 
 # Help Target
 help:
@@ -160,10 +197,14 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... example
-	@echo ... example.obj
-	@echo ... example.i
-	@echo ... example.s
+	@echo ... bindings
+	@echo ... functions
+	@echo ... binds.obj
+	@echo ... binds.i
+	@echo ... binds.s
+	@echo ... funcs.obj
+	@echo ... funcs.i
+	@echo ... funcs.s
 .PHONY : help
 
 
