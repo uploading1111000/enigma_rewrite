@@ -1,5 +1,5 @@
-#include <iostream>
+#include <pybind11/pybind11.h>
 
-int main(int n){
-	std::cout << 2 * n;
+int main(){
+	
 }
