@@ -1,9 +1,10 @@
 #pragma once
 
-class item{
+class item {
 public:
     item(int a, int b);
     int calc(int n);
 private:
-    int a,b;
-}
+    int a;
+    int b;
+};

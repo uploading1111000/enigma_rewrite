@@ -1,3 +1,0 @@
-"C:\ CMake\cmake-3.25.0-windows-x86_64\bin\cmake.exe" -E rm -f CMakeFiles\Solver.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\Solver.dir/objects.a @CMakeFiles\Solver.dir\objects1
-C:\msys64\mingw64\bin\c++.exe -Wl,--whole-archive CMakeFiles\Solver.dir/objects.a -Wl,--no-whole-archive -o Solver.exe -Wl,--out-implib,libSolver.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Solver.dir\linkLibs.rsp
