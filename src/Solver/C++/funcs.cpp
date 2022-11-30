@@ -4,10 +4,16 @@ item::item(int a, int b){
     item::b = b;
 }
 int item::calc(int n){
-    for (int i = 2; i < n; i++){
-        int c = a + b;
-        a = b;
-        b = c;
+    if (n < 2) {
+        return (n==0) ? a : b;
     }
-    return a;
+    int j = a;
+    int k = b;
+    int l = a + b;
+    for (int i = 1; i < n; i++){
+        l = j + k;
+        j = k;
+        k = l;
+    }
+    return k;
 }

@@ -1,5 +1,0 @@
-# ninja log v5
-2	49	6915472636439013	CMakeFiles/functions.dir/funcs.cpp.obj	511fad631dff0dca
-50	123	6915472637220302	functions.lib	e8f4fc933e81b82f
-5	1444	6915472650346152	CMakeFiles/bindings.dir/binds.cpp.obj	193f05621263f87b
-1446	1797	6915472653783900	bindings.cp311-win_amd64.pyd	d43cea56cdb859d8

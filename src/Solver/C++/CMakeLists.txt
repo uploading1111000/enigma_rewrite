@@ -3,9 +3,15 @@ project(Solver)
 find_package(Python 3.6 COMPONENTS Interpreter Development REQUIRED)
 add_subdirectory(pybind11)
 add_library(functions funcs.cpp)
-pybind11_add_module(bindings binds.cpp)
-target_link_libraries(bindings PUBLIC functions)
-target_include_directories(bindings PUBLIC
+add_executable(main debug.cpp)
+pybind11_add_module(binds binds.cpp)
+target_link_libraries(binds PUBLIC functions)
+target_link_libraries(main PUBLIC functions)
+target_include_directories(binds PUBLIC
+        "${PROJECT_SOURCE_DIR}"
+        "${PROJECT_BINARY_DIR}"
+)
+target_include_directories(main PUBLIC
         "${PROJECT_SOURCE_DIR}"
         "${PROJECT_BINARY_DIR}"
 )
