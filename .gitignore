@@ -2,4 +2,4 @@
 *.pyc
 *~
 *.swp
-src/solver/final4gram.json
+src/Solver/C++/out
