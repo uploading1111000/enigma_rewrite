@@ -1,4 +1,4 @@
-[submodule "src/Solver/C++/pybind11"]
-	path = src/Solver/C++/pybind11
+[submodule "src/Solver/Cpp/pybind11"]
+	path = src/Solver/Cpp/pybind11
 	url = ../../pybind/pybind11
 	branch = stable
