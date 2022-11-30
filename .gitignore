@@ -3,4 +3,4 @@
 *.pyc
 *~
 *.swp
-src/Solver/C++/out
+src/Solver/Cpp/out
