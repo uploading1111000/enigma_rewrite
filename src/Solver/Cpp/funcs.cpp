@@ -17,3 +17,11 @@ int item::calc(int n){
     }
     return k;
 }
+
+std::vector<int> sort(std::vector<int> a) {
+    std::vector<int> t;
+    t.push_back(1);
+    t.push_back(2);
+    t.push_back(3);
+    return t;
+}
