@@ -1,22 +1,5 @@
 #include "funcs.h"
-item::item(int a, int b){
-    item::a = a;
-    item::b = b;
-}
-int item::calc(int n){
-    if (n < 2) {
-        return (n==0) ? a : b;
-    }
-    int j = a;
-    int k = b;
-    int l = a + b;
-    for (int i = 1; i < n; i++){
-        l = j + k;
-        j = k;
-        k = l;
-    }
-    return k;
-}
+#include "funcs.h"
 
 int merge(int* starta, int lenA, int* startb, int lenB, int* out) {
     static int* partA = (int*)malloc(lenA * sizeof(int));
@@ -42,13 +25,50 @@ int merge(int* starta, int lenA, int* startb, int lenB, int* out) {
         pO++;
     }
     if (f == a)
-        memcpy(out + pO, partB + pB, lenB - pB);
+        memcpy(out + pO, partB + pB, (lenB - pB) * sizeof(int));
     else 
-        memcpy(out + pO, partA + pA, lenA - pB);
+        memcpy(out + pO, partA + pA, (lenA - pA)*sizeof(int));
     return 1;
 }
-std::vector<int> sort(std::vector<int> a) {
+struct sortedList {
+    int index;
+    int length;
+};
+void printvec(std::vector<int> v) {
+    std::cout << "\n";
+    for (int i : v) {
+        std::cout << i << ", ";
+    }
+}
+
+std::vector<int> sorts::mergesort(std::vector<int> a) { //DOESN'T WORK
     std::vector<int> working = a;
-    merge(&a[0], 3, &a[3], 3, &a[0]);
-    return a;
+    std::vector<sortedList> sorted;
+    sorted.reserve(working.size());
+    for (int i = 0; i < working.size(); i++) {
+        sorted.push_back(sortedList{ i, 1 });
+    }
+    std::vector<sortedList> sortedC;
+    while (sorted.size() > 1) {
+        for (int i = 0; i < sorted.size()-1; i += 2) {
+            merge(
+                &working[sorted.at(i).index], sorted.at(i).length,
+                &working[sorted.at(i + 1).index], sorted.at(i + 1).length,
+                &working[sorted.at(i).index]
+            );
+            sortedC.push_back(sortedList{ sorted.at(i).index,sorted.at(i).length + sorted.at(i + 1).length });
+        }
+        if (sorted.size() & 1) 
+            sortedC.push_back(sortedList{ sorted[sorted.size() - 1].index,sorted[sorted.size() - 1].length });
+        sorted.swap(sortedC);
+        sortedC.clear();
+        sortedC.reserve(sorted.size() / 2);
+    }
+    return working;
+}
+
+std::vector<int> sorts::quicksort(std::vector<int> in)
+{
+    
+    return std::vector<int>();
 }

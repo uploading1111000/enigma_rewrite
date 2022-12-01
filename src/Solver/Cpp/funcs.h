@@ -1,15 +1,11 @@
 #pragma once
 #include <vector>
+#include <iostream>
 enum fail {
     a, b
 };
-class item {
-public:
-    item(int a, int b);
-    int calc(int n);
-private:
-    int a;
-    int b;
-};
-
-std::vector<int> sort(const std::vector<int> a);
+int merge(int* starta, int lenA, int* startb, int lenB, int* out);
+namespace sorts {
+    std::vector<int> mergesort(std::vector<int> a);
+    std::vector<int> quicksort(std::vector<int> in);
+}
