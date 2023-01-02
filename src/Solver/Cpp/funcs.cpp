@@ -1,5 +1,4 @@
 #include "funcs.h"
-#include "funcs.h"
 
 int merge(int* starta, int lenA, int* startb, int lenB, int* out) {
     static int* partA = (int*)malloc(lenA * sizeof(int));
@@ -10,7 +9,7 @@ int merge(int* starta, int lenA, int* startb, int lenB, int* out) {
     memcpy(partA, starta, sizeof(int) * lenA);
     memcpy(partB, startb, sizeof(int) * lenB);
     int pA = 0, pB = 0, pO = 0;
-    fail f;
+    fail f = a;
     while(pA < lenA && pB < lenB){
         if (partA[pA] <= partB[pB]) {
             out[pO] = partA[pA];
@@ -40,7 +39,6 @@ void printvec(std::vector<int> v) {
         std::cout << i << ", ";
     }
 }
-
 std::vector<int> sorts::mergesort(std::vector<int> a) { //DOESN'T WORK
     std::vector<int> working = a;
     std::vector<sortedList> sorted;
