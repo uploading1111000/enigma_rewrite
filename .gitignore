@@ -4,3 +4,4 @@
 *~
 *.swp
 src/Solver/Cpp/out
+data/
