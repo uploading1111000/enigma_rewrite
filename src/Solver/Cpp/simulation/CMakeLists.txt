@@ -1,1 +1,1 @@
-add_library(wirings wirings.cpp)
+add_library(wirings wirings.cpp "reflector.h")

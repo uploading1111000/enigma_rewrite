@@ -1,9 +1,11 @@
 #include <array>
+#pragma once
 class Wirings {
-private:
+protected:
 	int ID;
 	std::array<int, 26> wiring;
-	Wirings* reversePointer;                               //Instead of regenerating a backwards wiring path, a child wiring is created
+	Wirings* reversePointer;    //Instead of regenerating a backwards wiring path, a child wiring is created
+	void generateReverse(std::array<int, 26> forward);
 public:
 	void setID(int id) {
 		ID = id;
@@ -22,6 +24,4 @@ public:
 	~Wirings() { 
 		delete reversePointer;                             //Child wiring has nullptr so will not delete parent
 	};
-protected:
-	void generateReverse(std::array<int, 26> forward);
 };
