@@ -1,16 +1,13 @@
 #include <iostream>
 #include <array>
 #include <utils.h>
-#include "reflector.h"
+#include "rotorSpecification.h"
 
 int main() {
-	std::array<int, 26> preset = wiringUtils::arrayFromString("YRUHQSLDPXNGOKMIEBFZCWVJAT");
-	std::cout << preset[0] << std::endl;
-	Reflector reflector(1, preset);
+	RotorSpecification v(1);
 	int i;
 	while (true) {
 		std::cin >> i;
-		std::cout << reflector.Transform(i) << std::endl;
+		std::cout << v.getRotorID(i) << std::endl;
 	}
-	return 0;
 }

@@ -9,6 +9,7 @@ pybind11_add_module(binds binds.cpp)
 target_link_libraries(main PUBLIC wirings)
 target_link_libraries(binds PUBLIC wirings)
 target_link_libraries(main PUBLIC wiringutil)
+target_link_libraries(main PUBLIC rotorSpecification)
 target_include_directories(binds PUBLIC
         "${PROJECT_SOURCE_DIR}"
         "${PROJECT_BINARY_DIR}"
