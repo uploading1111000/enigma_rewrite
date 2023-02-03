@@ -1,7 +1,7 @@
 #include <iostream>
 #include <array>
-#include <utils.h>
-#include "rotorSpecification.h"
+#include "utils/utils.h"
+#include "simulation/rotorSpecification.h"
 
 int main() {
 	RotorSpecification v(1);
