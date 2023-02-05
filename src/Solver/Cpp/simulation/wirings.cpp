@@ -1,5 +1,7 @@
 #include "wirings.h"
 
+const std::array<int, 26> sequential = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26};
+
 int Wirings::Transform(int in)
 {
 	if (in < 1 || in > 26) return -1;
@@ -22,7 +24,7 @@ void Wirings::reverse()
 Wirings::Wirings(int id)
 {
 	ID = id;
-	wiring = { -1 };
+	wiring = sequential;
 	reversePointer = nullptr;
 }
 

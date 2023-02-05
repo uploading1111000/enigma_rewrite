@@ -4,7 +4,7 @@ std::array<int, 26> wiringUtils::arrayFromString(std::string in) {
 	std::array<int, 26> returnable;
 	for (int i = 0; i < 26; i++) {
 		char key = in[i];
-		if (!(0 < (int)key - 64 < 27)) return { -1 };
+		if (!(0 < (int)key - 64 && int(key)-64 < 27)) return {-1};
 		returnable[i] = (int)key - 64;
 	}
 	return returnable;

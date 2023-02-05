@@ -14,4 +14,5 @@ public:
 	std::string getRotorID(int ID);
 	using Wirings::getID;
 	int getID(std::string ID);
+	std::unordered_set<int> getTurnpoints() { return turnpoints; };
 };
