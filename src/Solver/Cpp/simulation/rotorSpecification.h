@@ -1,18 +1,18 @@
 #include "wirings.h"
 #include <string>
-#include <unordered_set>
+#include <set>
 #include <array>
 class RotorSpecification : public Wirings{
 protected:
-	std::unordered_set<int> turnpoints;
+	std::set<int> turnpoints; //turnpoint will be a set of points at which the rotor will turn the next one
 public:
 	RotorSpecification(int ID);
-	RotorSpecification(int ID, std::array<int, 26> wirings, std::unordered_set<int> turnpoints);
+	RotorSpecification(int ID, std::array<int, 26> wirings, std::set<int> turnpoints);
 	RotorSpecification(std::string ID);
-	RotorSpecification(std::string ID, std::array<int, 26> wirings, std::unordered_set<int> turnpoints);
+	RotorSpecification(std::string ID, std::array<int, 26> wirings, std::set<int> turnpoints);
 	std::string getRotorID();
-	std::string getRotorID(int ID);
+	static std::string getRotorID(int ID);   //static conversion
 	using Wirings::getID;
-	int getID(std::string ID);
-	std::unordered_set<int> getTurnpoints() { return turnpoints; };
+	static int getID(std::string ID);        //static conversion
+	std::set<int> getTurnpoints() { return turnpoints; };
 };

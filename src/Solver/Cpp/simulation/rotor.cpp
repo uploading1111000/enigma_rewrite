@@ -13,31 +13,21 @@ Rotor::Rotor(int pos, int ring, RotorSpecification model) :
 {
 	position = pos;
 	ringPosition = ring;
-	place = turnless;
 }
 
 Rotor::Rotor(RotorSpecification model):
 	RotorSpecification::RotorSpecification(model)
 {
-	position = 1;
-	ringPosition = 1;
-	place = turnless;
 }
 
 Rotor::Rotor(int ID):
 	RotorSpecification::RotorSpecification(ID)
 {
-	position = 1;
-	ringPosition = 1;
-	place = turnless;
 }
 
 Rotor::Rotor(std::string ID):
 	RotorSpecification::RotorSpecification(ID)
 {
-	position = 1;
-	ringPosition = 1;
-	place = turnless;
 }
 
 bool Rotor::mutate(bool previous)

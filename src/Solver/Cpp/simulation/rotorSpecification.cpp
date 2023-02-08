@@ -6,8 +6,8 @@ RotorSpecification::RotorSpecification(int ID)
 {
 }
 
-RotorSpecification::RotorSpecification(int ID, std::array<int, 26> wiringI, std::unordered_set<int> turnpointsI)
-	: Wirings::Wirings(ID,wiring)
+RotorSpecification::RotorSpecification(int ID, std::array<int, 26> wiringI, std::set<int> turnpointsI)
+	: Wirings::Wirings(ID,wiringI)
 {
 	turnpoints = turnpointsI;
 }
@@ -17,8 +17,8 @@ RotorSpecification::RotorSpecification(std::string ID)
 {
 }
 
-RotorSpecification::RotorSpecification(std::string ID, std::array<int, 26> wiringI, std::unordered_set<int> turnpointsI)
-	: Wirings::Wirings(getID(ID),wiring)
+RotorSpecification::RotorSpecification(std::string ID, std::array<int, 26> wiringI, std::set<int> turnpointsI)
+	: Wirings::Wirings(getID(ID),wiringI)
 {
 	turnpoints = turnpointsI;
 }
