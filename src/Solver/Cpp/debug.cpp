@@ -13,14 +13,15 @@ int main() {
 	for (int t : wiring.getWiring()) {
 		std::cout << t << "\n";
 	}
-	int i;
+	char letter;
 	while (true) {
 
-		std::cout << "num to transform: ";
-		std::cin >> i;
+		std::cout << "key to transform: ";
+		std::cin >> letter;
+		int i = (int) letter - 64;
 		rotor.mutate(true);
 		int result = rotor.forwardTransform(i);
-		std::cout << "result: " << result << std::endl;
+		std::cout << "result: " << (char) (result + 64) << std::endl;
 		std::cout << "rotor position: " << rotor.getPosition() << std::endl;
 	}
 }

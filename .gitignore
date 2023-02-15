@@ -4,5 +4,6 @@
 *~
 *.swp
 src/Solver/Cpp/out
+src/Solver/Cpp/build
 data/
 ~$ite_up.docx

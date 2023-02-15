@@ -8,6 +8,12 @@ protected:
 	void generateReverse(std::array<int, 26> forward);
 	int Transform(int in);                                 //Transforms a letter as though going forward through a wiring path
 	int TransformReverse(int in);                          //Transforms a letter as though going backward through a wiring path
+	static inline void normalise(int& in){
+		if (in > 26) in -= 26;
+		if (in > 26) in -= 26;
+		if (in < 0) in += 26;
+		if (in < 0) in += 26;
+	};
 public:
 	void setID(int id) {
 		ID = id;

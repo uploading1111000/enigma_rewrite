@@ -53,19 +53,21 @@ bool Rotor::mutate(bool previous)
 
 int Rotor::forwardTransform(int in)
 {
-	int toTrans = (in + position - ringPosition) % 26;
-	if (toTrans == 0) toTrans = 26;
+	int toTrans = in + position - ringPosition;
+	normalise(toTrans);
 	int transformed = Transform(toTrans);
-	int returnable = (transformed - position + ringPosition) % 26;
-	return (returnable != 0) ? returnable : 26;
+	int returnable = transformed - position + ringPosition;
+	normalise(returnable);
+	return returnable;
 }
 
 int Rotor::backwardTransform(int in)
 {
-	int toTrans = (in + position - ringPosition) % 26;
-	if (toTrans == 0) toTrans = 26;
+	int toTrans = in + position - ringPosition;
+	normalise(toTrans);
 	int transformed = TransformReverse(toTrans);
-	int returnable = (transformed - position + ringPosition) % 26;
-	return (returnable != 0) ? returnable : 26;
+	int returnable = transformed - position + ringPosition;
+	normalise(returnable);
+	return returnable;
 }
 
