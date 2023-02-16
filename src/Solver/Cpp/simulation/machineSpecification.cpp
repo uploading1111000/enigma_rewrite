@@ -16,15 +16,15 @@ MachineSpecification::MachineSpecification(std::string filepath)
 	json rotors = data["rotors"];
 	int j = 0;
 	for (json rotor : rotors) {
-		std::vector<char> wires = rotor["wirings"];
-		std::vector<char> turns = rotor["turnovers"];
+		std::string wires = rotor["wirings"];
+		std::vector<std::string> turns = rotor["turnovers"];
 		std::array<int, 26> wiring = sequential;
 		for (int i = 0; i < wires.size(); i++) {
 			wiring[i] = (int)wires[i]-64;
 		}
 		std::set<int> turnovers;
 		for (int i = 0; i < turns.size(); i++) {
-			turnovers.insert((int)turns[i]-64);
+			turnovers.insert((int)turns[i][0] - 64);
 		}
 		RotorSpecification rot(j,wiring,turnovers);
 		j++;
@@ -41,7 +41,7 @@ MachineSpecification::MachineSpecification(std::string filepath)
 		Reflector reflectr(j, wiring);
 		possibleReflectors.push_back(reflectr);
 	}
-
+	
 }
 
 RotorSpecification& MachineSpecification::getNext()

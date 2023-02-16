@@ -7,7 +7,7 @@ class MachineSpecification {
 protected:
 	std::vector<RotorSpecification>possibleRotors;
 	std::vector<Reflector> possibleReflectors;
-	int index = 0;
+	int index = -1;
 	int reflectorIndex = 0;
 	std::string name = "Custom";
 public:
