@@ -1,0 +1,47 @@
+{
+  "name": "Enigma M4",
+  "size": 4,
+  "rotors": [
+    {
+      "wirings": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+      "turnovers": [ "Q" ]
+    },
+    {
+      "wirings": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+      "turnovers": [ "E" ]
+    },
+    {
+      "wirings": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+      "turnovers": [ "V" ]
+    },
+    {
+      "wirings": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+      "turnovers": [ "J" ]
+    },
+    {
+      "wirings": "VZBRGITYUPSDNHLXAWMJQOFECK",
+      "turnovers": [ "Z" ]
+    },
+    {
+      "wirings": "JPGVOUMFYQBENHZRDKASXLICTW",
+      "turnovers": [ "Z", "M" ]
+    },
+    {
+      "wirings": "NZJHGRCXMYSWBOUFAIVLPEKQDT",
+      "turnovers": [ "Z", "M" ]
+    },
+    {
+      "wirings": "FKQHTLXOCBJSPDZRAMEWNIUYGV",
+      "turnovers": [ "Z", "M" ]
+    }
+  ],
+  "reflectors": [
+    "",
+    "ENKQAUYWJICOPBLMDXZVFTHRGS",
+    "RDOBJNTKVEHMLFCWZAXGYIPSUQ"
+  ],
+  "rotors4": [
+    "LEYJVCNIXWPBQMDRTAKZGFUHOS",
+    "FSOKANUERHMBTIYCWLQPZXVGJD"
+  ]
+}

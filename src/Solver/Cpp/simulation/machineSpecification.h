@@ -1,20 +1,22 @@
 #include "rotorSpecification.h"
 #include "reflector.h"
 #include <vector>
+#include <string>
 
-class MachineSpecification{
+class MachineSpecification {
 protected:
-	std::vector<RotorSpecification> possibleRotors;
+	std::vector<RotorSpecification>possibleRotors;
 	std::vector<Reflector> possibleReflectors;
 	int index = 0;
+	int reflectorIndex = 0;
+	std::string name = "Custom";
 public:
-	int getN(){return 3;};
-	RotorSpecification& getRotor(int N) {return possibleRotors[n];};
-	RotorSpecification& getNext() {
-		index += 1;
-		if (index >= possibleRotors.size()){
-			index = 0;
-		}
-		return possibleRotors[index];
-	}
-}
+	MachineSpecification(std::string filepath);
+	virtual int getN() { return 3; };
+	RotorSpecification& getRotor(int N) { return possibleRotors[N]; };
+	RotorSpecification& getNext();
+	size_t getRotorLength() { return possibleRotors.size(); };
+	Reflector& getReflector(int N) { return possibleReflectors[N]; };
+	Reflector& getNextReflector();
+	size_t getReflectorLength() { return possibleReflectors.size(); };
+};

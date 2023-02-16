@@ -8,11 +8,14 @@ add_subdirectory(simulation)
 add_subdirectory(utils)
 add_executable(main debug.cpp)
 pybind11_add_module(binds binds.cpp)
-target_link_libraries(main PUBLIC wirings)
+target_link_libraries(main PUBLIC 
+        wirings
+        wiringutil
+        rotorSpecification
+        rotor
+        machineSpecification
+)
 target_link_libraries(binds PUBLIC wirings)
-target_link_libraries(main PUBLIC wiringutil)
-target_link_libraries(main PUBLIC rotorSpecification)
-target_link_libraries(main PUBLIC rotor)
 target_include_directories(binds PUBLIC
         "${PROJECT_SOURCE_DIR}"
         "${PROJECT_BINARY_DIR}"

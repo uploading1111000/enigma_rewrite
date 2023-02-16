@@ -1,0 +1,31 @@
+{
+  "name": "Enigma I",
+  "size": 3,
+  "rotors": [
+    {
+      "wirings": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+      "turnovers": [ "Q" ]
+    },
+    {
+      "wirings": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+      "turnovers": [ "E" ]
+    },
+    {
+      "wirings": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+      "turnovers": [ "V" ]
+    },
+    {
+      "wirings": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+      "turnovers": [ "J" ]
+    },
+    {
+      "wirings": "VZBRGITYUPSDNHLXAWMJQOFECK",
+      "turnovers": [ "Z" ]
+    }
+  ]
+  "reflectors": [
+    "EJMZALYXVBWFCRQUONTSPIKHGD",
+    "YRUHQSLDPXNGOKMIEBFZCWVJAT",
+    "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+  ]
+}
