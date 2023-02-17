@@ -2,6 +2,7 @@
 #include <string>
 #include <set>
 #include <array>
+#pragma  once
 class RotorSpecification : public Wirings{
 protected:
 	std::set<int> turnpoints; //turnpoint will be a set of points at which the rotor will turn the next one

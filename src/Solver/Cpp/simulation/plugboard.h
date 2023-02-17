@@ -1,6 +1,7 @@
 #include "wirings.h"
 #include <array>
 #include <vector>
+#pragma once
 class Plugboard : public Wirings {
 public:
 	Plugboard(std::array<int, 26> wiring) : Wirings::Wirings(0, wiring) {};

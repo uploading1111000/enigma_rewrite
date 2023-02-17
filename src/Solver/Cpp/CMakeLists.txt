@@ -13,7 +13,8 @@ target_link_libraries(main PUBLIC
         wiringutil
         rotorSpecification
         rotor
-        machineSpecification
+		machineSpecification
+        machineSpecificationFour
 )
 target_link_libraries(binds PUBLIC wirings)
 target_include_directories(binds PUBLIC

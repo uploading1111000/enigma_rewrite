@@ -15,3 +15,10 @@ target_link_libraries(machineSpecification PUBLIC
 		rotorSpecification
 		nlohmann_json::nlohmann_json
 )
+add_library(machineSpecificationFour machineSpecification4.cpp)
+target_link_libraries(machineSpecificationFour PUBLIC
+		wirings
+		rotorSpecification
+		machineSpecification
+		nlohmann_json::nlohmann_json
+)

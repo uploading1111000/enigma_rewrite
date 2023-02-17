@@ -1,4 +1,5 @@
 #include "rotorSpecification.h"
+#pragma once
 enum Place {
 	right = 0,   //1st rotor, will turn next rotor if in correct position
 	middle = 1,  //2nd rotor, will turn one after if in the correct position and then always turn self (double step)
