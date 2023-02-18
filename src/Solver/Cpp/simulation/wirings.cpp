@@ -1,4 +1,5 @@
 #include "wirings.h"
+#include "wirings.h"
 
 int Wirings::Transform(int in)
 {
@@ -30,6 +31,13 @@ Wirings::Wirings(int id, std::array<int, 26> Iwiring)
 {
 	wiring = Iwiring;
 	ID = id;
+	reversePointer = nullptr;
+}
+
+Wirings::Wirings()
+{
+	ID = 0;
+	wiring = sequential;
 	reversePointer = nullptr;
 }
 

@@ -1,21 +1,14 @@
 #include <iostream>
 #include <array>
 #include "utils/utils.h"
-#include "simulation/machineSpecification4.h"
+#include "simulation/machineSpecification.h"
+#include "machine.h"
 #include <set>
 
 int main() {
-	MachineSpecificationFour Spec("../../simulation/machineJsons/enigmaM4.json");
-	for (int j = 0; j < Spec.getRotorLength(); j++) {
-		RotorSpecification A = Spec.getNext();
-		std::cout << A.getRotorID() << std::endl;
-		for (int i : A.getTurnpoints()) {
-			std::cout << i;
-		}
-		std::cout << std::endl;
-		for (int i : A.getWiring()) {
-			std::cout << (char)(i + 64);
-		}
-		std::cout << std::endl;
-	}
+	MachineSpecification Spec("../../../simulation/machineJsons/enigmaM3.json");
+	Machine debugMachine(Spec, { 5,0,6 }, 1, {});
+	debugMachine.setPositions({ 11,24,2 });
+	debugMachine.setRings({ 21,18,25 });
+	std::cout << debugMachine.encryptWord("QUICKBROWNFOX");
 }

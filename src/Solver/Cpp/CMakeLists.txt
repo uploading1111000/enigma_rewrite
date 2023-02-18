@@ -15,6 +15,7 @@ target_link_libraries(main PUBLIC
         rotor
 		machineSpecification
         machineSpecificationFour
+        machine
 )
 target_link_libraries(binds PUBLIC wirings)
 target_include_directories(binds PUBLIC

@@ -14,12 +14,6 @@ public:
 	RotorSpecification getRotorFour(int N){
 		return possibleRotorsFour[N];
 	};
-	RotorSpecification getNextFour(){
-		fourIndex++;
-		if (fourIndex >= possibleRotorsFour.size()){
-			fourIndex = 0;
-		}
-		return possibleRotorsFour[fourIndex];
-	};
+	RotorSpecification getNextFour();
 	size_t getRotorFourSize(){ return possibleRotorsFour.size();};
 };

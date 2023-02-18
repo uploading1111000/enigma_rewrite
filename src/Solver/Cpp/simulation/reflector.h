@@ -2,7 +2,7 @@
 #pragma once
 class Reflector : public Wirings {
 public:
-	char getReflectorID() {             //very simple
+	char getReflectorID() {             
 		return char(getID() + 65);
 	}
 	using Wirings::Wirings;

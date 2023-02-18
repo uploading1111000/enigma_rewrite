@@ -3,7 +3,6 @@
 #include <fstream>
 #include <array>
 #include <vector>
-#include <iostream>
 using json = nlohmann::json;
 
 MachineSpecification::MachineSpecification(std::string filepath)

@@ -22,3 +22,9 @@ target_link_libraries(machineSpecificationFour PUBLIC
 		machineSpecification
 		nlohmann_json::nlohmann_json
 )
+add_library(machine machine.cpp)
+target_link_libraries(machine PUBLIC
+		machineSpecification
+		rotor
+		wirings
+)

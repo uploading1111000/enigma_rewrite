@@ -1,6 +1,7 @@
 #include "rotor.h"
+#include <iostream>
 
-Rotor::Rotor(int pos, int ring, Place pla, RotorSpecification model):
+Rotor::Rotor(int pos, int ring, Place pla, const RotorSpecification &model):
 	RotorSpecification::RotorSpecification(model)
 {
 	position = pos;
@@ -8,14 +9,14 @@ Rotor::Rotor(int pos, int ring, Place pla, RotorSpecification model):
 	place = pla;
 }
 
-Rotor::Rotor(int pos, int ring, RotorSpecification model) :
+Rotor::Rotor(int pos, int ring, const RotorSpecification &model) :
 	RotorSpecification::RotorSpecification(model)
 {
 	position = pos;
 	ringPosition = ring;
 }
 
-Rotor::Rotor(RotorSpecification model):
+Rotor::Rotor(RotorSpecification const &model):
 	RotorSpecification::RotorSpecification(model)
 {
 }
@@ -27,6 +28,11 @@ Rotor::Rotor(int ID):
 
 Rotor::Rotor(std::string ID):
 	RotorSpecification::RotorSpecification(ID)
+{
+}
+
+Rotor::Rotor() :
+	RotorSpecification::RotorSpecification(0)
 {
 }
 
@@ -51,21 +57,21 @@ bool Rotor::mutate(bool previous)
 	return next;
 }
 
-int Rotor::forwardTransform(int in)
+int Rotor::Transform(int in)
 {
 	int toTrans = in + position - ringPosition;
 	normalise(toTrans);
-	int transformed = Transform(toTrans);
+	int transformed = Wirings::Transform(toTrans);
 	int returnable = transformed - position + ringPosition;
 	normalise(returnable);
 	return returnable;
 }
 
-int Rotor::backwardTransform(int in)
+int Rotor::TransformReverse(int in)
 {
 	int toTrans = in + position - ringPosition;
 	normalise(toTrans);
-	int transformed = TransformReverse(toTrans);
+	int transformed = Wirings::TransformReverse(toTrans);
 	int returnable = transformed - position + ringPosition;
 	normalise(returnable);
 	return returnable;
