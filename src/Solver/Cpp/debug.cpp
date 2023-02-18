@@ -7,8 +7,8 @@
 
 int main() {
 	MachineSpecification Spec("../../../simulation/machineJsons/enigmaM3.json");
-	Machine debugMachine(Spec, { 5,0,6 }, 1, {});
-	debugMachine.setPositions({ 11,24,2 });
-	debugMachine.setRings({ 21,18,25 });
-	std::cout << debugMachine.encryptWord("QUICKBROWNFOX");
+	Machine debugMachine(Spec, { 1,0,2 }, 1, { {'E','Z'},{'R','W'},{'M','V'},{'I','U'}, {'B','L'}, {'P','X'}, {'J','O'} });
+	debugMachine.setPositions({ 2,7,9 });
+	debugMachine.setRings({ 1,23,4 });
+	std::cout << debugMachine.encryptWord("AUFBEFEHLDESOBERSTENBEFEHLSHABERSSINDIMFALLEXZXZTX");
 }
