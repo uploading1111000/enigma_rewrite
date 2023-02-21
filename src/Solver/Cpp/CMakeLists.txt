@@ -16,6 +16,7 @@ target_link_libraries(main PUBLIC
 		machineSpecification
         machineSpecificationFour
         machine
+        machineFour
 )
 target_link_libraries(binds PUBLIC wirings)
 target_include_directories(binds PUBLIC

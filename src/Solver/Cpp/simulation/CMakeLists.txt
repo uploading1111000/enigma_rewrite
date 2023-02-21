@@ -28,3 +28,7 @@ target_link_libraries(machine PUBLIC
 		rotor
 		wirings
 )
+add_library(machineFour "machine4.cpp")
+target_link_libraries(machineFour PUBLIC
+		machine
+)
