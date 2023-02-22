@@ -1,5 +1,4 @@
 #include "machine.h"
-#include <iostream>
 
 inline int convert(char in) {
 	return (int) in - 64;

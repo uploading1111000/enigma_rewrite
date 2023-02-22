@@ -11,5 +11,8 @@ public:
 	void setRotorFourRing(int ring) { rotor4.setRing(ring); };
 	Rotor* getRotorFour() { return &rotor4; };
 	int encryptLetter(int);
+	using Machine::encryptLetter;
+	using Machine::encryptWord;
 	std::vector<int> encryptLetterVerbose(int);
+	using Machine::encryptLetterVerbose;
 };

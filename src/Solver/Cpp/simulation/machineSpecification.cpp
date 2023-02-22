@@ -10,7 +10,6 @@ MachineSpecification::MachineSpecification(std::string filepath)
 	std::ifstream file(filepath);
 	json data = json::parse(file);
 	int N = data["size"];
-	if (N != getN()) return;
 	name = data["name"];
 	json rotors = data["rotors"];
 	int j = 0;

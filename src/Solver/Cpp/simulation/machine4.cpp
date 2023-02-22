@@ -2,15 +2,12 @@
 
 MachineFour::MachineFour(MachineSpecificationFour& spec, std::array<int, 3> rotorIds,int rotor4Id, int reflectorId, std::vector<std::array<char, 2>> plugboardPairs)
 {
-	std::cout << "checkpoint1\n";
 	specification = std::unique_ptr<MachineSpecificationFour>(new MachineSpecificationFour(spec));
 	for (int i = 0; i < 3; i++) {
 		rotors[i] = Rotor(specification->getRotor(rotorIds[i]));
 	}
 	reflector = specification->getReflector(reflectorId);
-	std::cout << "checkpoint2\n";
 	plugboard = Plugboard(plugboardPairs);
-	std::cout << "checkpoint3\n";
 	rotor4 = Rotor(specification->getRotorFour(rotor4Id));
 }
 

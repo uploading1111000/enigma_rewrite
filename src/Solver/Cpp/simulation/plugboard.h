@@ -1,7 +1,6 @@
 #include "wirings.h"
 #include <array>
 #include <vector>
-#include <iostream>
 #pragma once
 #define CONVERT(a) ((int) a) - 64
 

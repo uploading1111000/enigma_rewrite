@@ -15,6 +15,7 @@ MachineSpecificationFour::MachineSpecificationFour(std::string filename) : Machi
 			wirings[i] = (int)rotor[i] - 64;
 		}
 		RotorSpecification rot(j, wirings, {});
+		possibleRotorsFour.push_back(rot);
 		j++;
 	}
 };
