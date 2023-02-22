@@ -125,7 +125,7 @@ std::vector<int> Machine::encryptLetterVerbose(int start)
 std::string Machine::encryptLetterVerbose(char letter)
 {
 	int start = convert(letter);
-	std::vector<int> result = encryptLetterVerbose(start);
+	std::vector<int> result = this->encryptLetterVerbose(start);
 	std::string returnable;
 	for (int num : result) {
 		returnable.push_back(convert(num));

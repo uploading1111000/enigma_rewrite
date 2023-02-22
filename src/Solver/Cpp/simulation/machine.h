@@ -8,13 +8,14 @@
 #include <vector>
 class Machine {
 private:
-	std::unique_ptr<MachineSpecification> specification;
+	std::unique_ptr<MachineSpecification> specification = nullptr;
 protected:
 	std::array<Rotor, 3> rotors;
 	Reflector reflector;
 	Plugboard plugboard;
 public:
 	Machine(MachineSpecification&, std::array<int,3>, int, std::vector<std::array<char, 2>>);
+	Machine() {}; //don't call this
 	void setPositions(const std::array<int, 3>&);
 	void setPosition(int N, int position);
 	void setRings(std::array<int, 3>);

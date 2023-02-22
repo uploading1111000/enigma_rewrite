@@ -28,7 +28,7 @@ std::string RotorSpecification::getRotorID()
 	return getRotorID(getID());
 }
 
-const char romanNumerals[10][6] = { "I","II","III","IV","V","VI","VII","VIII","Beta","Gamma" };
+const char romanNumerals[8][6] = { "I","II","III","IV","V","VI","VII","VIII" };
 
 std::string RotorSpecification::getRotorID(int ID)
 {
@@ -46,8 +46,6 @@ const std::unordered_map<std::string, int> numeralsRoman
 	{"VI",5},
 	{"VII",6},
 	{"VIII",7},
-	{"Beta",8},
-	{"Gamma",9}
 };
 
 int RotorSpecification::getID(std::string rotor)

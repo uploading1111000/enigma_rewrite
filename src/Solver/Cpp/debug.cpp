@@ -1,14 +1,17 @@
 #include <iostream>
 #include <array>
 #include "utils/utils.h"
-#include "simulation/machineSpecification.h"
-#include "machine.h"
+#include "simulation/machineSpecification4.h"
+#include "machine4.h"
 #include <set>
 
 int main() {
-	MachineSpecification Spec("../../../simulation/machineJsons/enigmaM3.json");
-	Machine debugMachine(Spec, { 1,0,2 }, 1, { {'E','Z'},{'R','W'},{'M','V'},{'I','U'}, {'B','L'}, {'P','X'}, {'J','O'} });
-	debugMachine.setPositions({ 2,7,9 });
-	debugMachine.setRings({ 1,23,4 });
-	std::cout << debugMachine.encryptWord("AUFBEFEHLDESOBERSTENBEFEHLSHABERSSINDIMFALLEXZXZTX");
+	MachineSpecificationFour Spec("../../../simulation/machineJsons/enigmaM4.json");
+	std::cout << Spec.getRotor(6).getID();
+	MachineFour debugMachine(Spec, { 2,6,4 }, 1, 1, { {'W','M'},{'E','F'},{'C','K'},{'D','B'}, {'Q','H'}, {'X','Z'}, {'A','J'},{'R','N'},{'U','G'},{'I','V'}});
+	debugMachine.setPositions({ 15,19,13 });
+	debugMachine.setRings({ 13,4,4 });
+	debugMachine.setRotorFourPosition(3);
+	debugMachine.setRotorFourRing(19);
+	std::cout << debugMachine.encryptWord("WALTZBADNYMPHFORQUICKJIGSVEX");
 }
