@@ -6,6 +6,7 @@ find_package(Python 3.6 COMPONENTS Interpreter Development REQUIRED)
 add_subdirectory(pybind11)
 add_subdirectory(simulation)
 add_subdirectory(utils)
+add_subdirectory(analysis)
 add_executable(main debug.cpp)
 pybind11_add_module(binds binds.cpp)
 target_link_libraries(main PUBLIC 
@@ -17,6 +18,7 @@ target_link_libraries(main PUBLIC
         machineSpecificationFour
         machine
         machineFour
+        IOC
 )
 target_link_libraries(binds PUBLIC wirings)
 target_include_directories(binds PUBLIC
@@ -29,4 +31,5 @@ target_include_directories(main PUBLIC
         "${PROJECT_BINARY_DIR}"
         "${PROJECT_SOURCE_DIR}/simulation"
         "${PROJECT_SOURCE_DIR}/utils"
+        "${PROJECT_SOURCE_DIR}/analysis"
 )

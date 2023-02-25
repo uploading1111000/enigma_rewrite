@@ -70,7 +70,9 @@ int Machine::encryptLetter(int start)
 char Machine::encryptLetter(char letter)
 {
 	int start = convert(letter);
-	int out = this->encryptLetter(start);
+	int out = start;
+	if (start > 0 and start < 27) out = this->encryptLetter(start);
+	else if (start > 32 and start < 59) out = this->encryptLetter(start - 32);
 	return convert(out);
 }
 
