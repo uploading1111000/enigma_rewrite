@@ -1,4 +1,5 @@
 #include "analysisAbstract.h"
+#include "NGramUtils.h"
 #include <unordered_map>
 #include <string>
 template<int N> class NGram {

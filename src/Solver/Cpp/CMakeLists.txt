@@ -11,6 +11,7 @@ add_subdirectory(simulation)
 add_subdirectory(utils)
 add_subdirectory(analysis)
 add_executable(main debug.cpp)
+add_executable(dataBuilder ngramdatabuilder.cpp)
 pybind11_add_module(binds binds.cpp)
 target_link_libraries(main PUBLIC 
         wirings
@@ -25,6 +26,15 @@ target_link_libraries(main PUBLIC
         Boost::headers
         Boost::serialization
 )
+
+target_link_libraries(dataBuilder PUBLIC
+    Boost::headers
+    Boost::serialization
+)
+target_include_directories(dataBuilder PUBLIC
+    "${PROJECT_SOURCE_DIR}/analysis"
+)
+
 target_link_libraries(binds PUBLIC wirings)
 target_include_directories(binds PUBLIC
         "${PROJECT_SOURCE_DIR}"
