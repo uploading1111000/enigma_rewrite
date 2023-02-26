@@ -3,6 +3,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 project(Solver)
 find_package(Python 3.6 COMPONENTS Interpreter Development REQUIRED)
+set(BOOST_ROOT = "C:/Boost/boost_1_81_0")
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost 1.81.0 REQUIRED)
 add_subdirectory(pybind11)
 add_subdirectory(simulation)
 add_subdirectory(utils)
@@ -19,6 +22,7 @@ target_link_libraries(main PUBLIC
         machine
         machineFour
         IOC
+        Boost::headers
 )
 target_link_libraries(binds PUBLIC wirings)
 target_include_directories(binds PUBLIC
@@ -32,4 +36,5 @@ target_include_directories(main PUBLIC
         "${PROJECT_SOURCE_DIR}/simulation"
         "${PROJECT_SOURCE_DIR}/utils"
         "${PROJECT_SOURCE_DIR}/analysis"
+        "C:/Boost/boost_1_81_0/stage/lib"
 )

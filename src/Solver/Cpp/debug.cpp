@@ -11,15 +11,42 @@ std::string clean(std::string in) {
 	return returnable;
 }
 
-int main() {
-	/*MachineSpecificationFour Spec("../../../simulation/machineJsons/enigmaM4.json");
-	MachineFour debugMachine(Spec, { 2,6,4 }, 0, 1, { {'W','M'},{'E','F'},{'C','K'},{'D','B'}, {'Q','H'}, {'X','Z'}, {'A','J'},{'R','N'},{'U','G'},{'I','V'}});
-	debugMachine.setPositions({ 15,19,13 });
-	debugMachine.setRings({ 13,4,4 });
-	debugMachine.setRotorFourPosition(22);
-	debugMachine.setRotorFourRing(3);
-	std::cout << debugMachine.encryptWord("PHASELLUSMOLESTIESAPIENEUIMPERDIET");*/
-	Analyser* analyser = new IndexOfCoincidence();
-	std::cout << analyser->getName() << std::endl;
-	std::cout << analyser->score(wiringUtils::vectorFromString(clean("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ornare, ex non pellentesque egestas, elit nibh consequat orci, in fermentum ex quam at ipsum. Aenean vulputate auctor metus. In ac eros et erat dignissim hendrerit. Ut rutrum tristique felis, nec sodales tellus interdum et. Donec nec elementum tellus, et sagittis nisl. Suspendisse quis risus lectus. Maecenas suscipit bibendum dui."))) << std::endl;
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <array>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/array.hpp>
+
+const int N = 3; // size of the array
+
+int main()
+{
+    std::map<std::array<int, N>, int> myMap = { { {1,2,3}, 4 }, { {4,5,6}, 7 }, { {7,8,9}, 10 } };
+
+    // Serialize the map to a file
+    std::ofstream outputFile("output.bin", std::ios::binary);
+    boost::archive::binary_oarchive oa(outputFile);
+    oa << myMap;
+
+    // Deserialize the map from the file
+    std::ifstream inputFile("output.bin", std::ios::binary);
+    boost::archive::binary_iarchive ia(inputFile);
+    std::map<std::array<int, N>, int> myMap2;
+    ia >> myMap2;
+
+    // Print the deserialized map to verify that it was read correctly
+    for (auto const& pair : myMap2)
+    {
+        std::cout << "{";
+        for (int i = 0; i < N; i++)
+        {
+            std::cout << pair.first[i] << " ";
+        }
+        std::cout << "}: " << pair.second << std::endl;
+    }
+
+    return 0;
 }

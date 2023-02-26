@@ -3,6 +3,6 @@
 
 class IndexOfCoincidence : public Analyser {
 public:
-	float score(std::vector<int>);
+	virtual float score(std::vector<int>);
 	std::string getName() { return "Index of Co-incidence"; };
 };
