@@ -1,13 +1,9 @@
 #include "NGramUtils.h"
 #include <iostream>
 #include <fstream>
-#include <map>
 #include <array>
 #include <string>
-#include <unordered_map>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/unordered_map.hpp>
 #include <boost/serialization/array.hpp>
 
 int main()
@@ -32,27 +28,46 @@ int main()
     std::vector<std::array<int, 3>> trigrams = getNGram<int, 3>(data);
     std::vector<std::array<int, 4>> quadgrams = getNGram<int, 4>(data);
 
-    std::unordered_map<std::array<int, 2>,int> bigramFrequencies;
-    std::unordered_map<std::array<int, 3>, int> trigramFrequencies;
-    std::unordered_map<std::array<int, 4>, int> quadgramFrequencies;
+    std::array<int, 1024> bigramFrequencies{};
+    std::array<int, 32768> trigramFrequencies{};
+    std::array<int, 1048576>* quadgramFrequencies = new std::array<int, 1048576>{};
 
-    for (std::array<int, 2> key : bigrams) bigramFrequencies[key]++;
-    for (std::array<int, 3> key : trigrams) trigramFrequencies[key]++;
-    for (std::array<int, 4> key : quadgrams) quadgramFrequencies[key]++;
+    for (std::array<int, 2> bigram : bigrams) {
+        int index = 0;
+        for (int i = 0; i < 2; i++) {
+            index = index | (bigram[i] << (5 * i));
+        }
+        bigramFrequencies[index]++;
+    }
+    for (std::array<int, 3> trigram : trigrams) {
+        int index = 0;
+        for (int i = 0; i < 3; i++) {
+            index = index | (trigram[i] << (5 * i));
+        }
+        trigramFrequencies[index]++;
+    }
+    for (std::array<int, 4> quadgram : quadgrams) {
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            index = index | (quadgram[i] << (5 * i));
+        }
+        quadgramFrequencies->at(index)++;
+    }
+
     {
-        std::ofstream biout(outname + "bi.bin");
-        boost::archive::binary_oarchive oa(biout);
-        boost::serialization::save(oa, bigramFrequencies, 1);
+        std::ofstream outfile(outname + "bi.bin", std::ios::binary);
+        boost::archive::binary_oarchive oa(outfile);
+        oa << bigramFrequencies;
     }
     {
-        std::ofstream triout(outname + "tri.bin");
-        boost::archive::binary_oarchive oa(triout);
-        boost::serialization::save(oa, trigramFrequencies, 1);
+        std::ofstream outfile(outname + "tri.bin", std::ios::binary);
+        boost::archive::binary_oarchive oa(outfile);
+        oa << trigramFrequencies;
     }
     {
-        std::ofstream quadout(outname + "quad.bin");
-        boost::archive::binary_oarchive oa(quadout);
-        boost::serialization::save(oa, quadgramFrequencies, 1);
+        std::ofstream outfile(outname + "quad.bin", std::ios::binary);
+        boost::archive::binary_oarchive oa(outfile);
+        oa << *quadgramFrequencies;
     }
 
 

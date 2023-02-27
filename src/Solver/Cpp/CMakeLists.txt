@@ -23,6 +23,7 @@ target_link_libraries(main PUBLIC
         machine
         machineFour
         IOC
+        NGram
         Boost::headers
         Boost::serialization
 )

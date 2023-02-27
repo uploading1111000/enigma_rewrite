@@ -1,5 +1,6 @@
 #include <array>
 #include <vector>
+#include <memory>
 
 template<typename T,int N>
 std::vector<std::array<T, N>> getNGram(std::vector<T> word) {

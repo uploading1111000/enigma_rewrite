@@ -1,11 +1,13 @@
 #include "analysisAbstract.h"
 #include "NGramUtils.h"
-#include <unordered_map>
+#include <memory>
+#include <array>
 #include <string>
-template<int N> class NGram {
+
+class BiGram: public Analyser {
 protected:
-	std::unordered_map<std::array<int, N>, int> frequencies;
+	std::unique_ptr<std::array<int, 1<<(2*5)>> frequencies;
 public:
-	NGram(std::string);
+	BiGram(std::string);
 	float score(std::vector<int>);
 };
