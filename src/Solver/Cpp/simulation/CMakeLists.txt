@@ -28,7 +28,10 @@ target_link_libraries(machine PUBLIC
 		rotor
 		wirings
 )
-add_library(machineFour "machine4.cpp")
+target_include_directories(machine PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}
+)
+add_library(machineFour machine4.cpp)
 target_link_libraries(machineFour PUBLIC
 		machine
 )
