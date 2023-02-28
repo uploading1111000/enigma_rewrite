@@ -6,6 +6,7 @@
 #include <memory>
 #include <array>
 #include <vector>
+#pragma once
 class Machine {
 private:
 	std::unique_ptr<MachineSpecification> specification = nullptr;

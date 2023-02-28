@@ -3,7 +3,7 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/array.hpp>
 BiGram::BiGram(std::string filename) {
-	frequencies = std::unique_ptr < std::array<int, 1 << (2 * 5)>>(new std::array<int, 1 << (2 * 5)>);
+	frequencies = std::unique_ptr < std::array<float, 1 << (2 * 5)>>(new std::array<float, 1 << (2 * 5)>);
 	std::ifstream infile(filename,std::ios::binary);
 	boost::archive::binary_iarchive ia(infile);
 	ia >> *frequencies;
@@ -20,11 +20,11 @@ float BiGram::score(std::vector<int> word)
 		}
 		sum +=  (*frequencies)[index];
 	}
-	return (float) sum / word.size();
+	return (float) sum;
 }
 
 TriGram::TriGram(std::string filename) {
-	frequencies = std::unique_ptr < std::array<int, 1 << (3 * 5)>>(new std::array<int, 1 << (3 * 5)>);
+	frequencies = std::unique_ptr < std::array<float, 1 << (3 * 5)>>(new std::array<float, 1 << (3 * 5)>);
 	std::ifstream infile(filename, std::ios::binary);
 	boost::archive::binary_iarchive ia(infile);
 	ia >> *frequencies;
@@ -41,11 +41,11 @@ float TriGram::score(std::vector<int> word)
 		}
 		sum += (*frequencies)[index];
 	}
-	return (float)sum / word.size();
+	return (float)sum;
 }
 
 QuadGram::QuadGram(std::string filename) {
-	frequencies = std::unique_ptr < std::array<int, 1 << (4 * 5)>>(new std::array<int, 1 << (4 * 5)>);
+	frequencies = std::unique_ptr < std::array<float, 1 << (4 * 5)>>(new std::array<float, 1 << (4 * 5)>);
 	std::ifstream infile(filename, std::ios::binary);
 	boost::archive::binary_iarchive ia(infile);
 	ia >> *frequencies;
@@ -62,5 +62,5 @@ float QuadGram::score(std::vector<int> word)
 		}
 		sum += (*frequencies)[index];
 	}
-	return (float)sum / word.size();
+	return (float)sum;
 }

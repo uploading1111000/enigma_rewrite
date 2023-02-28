@@ -3,17 +3,14 @@
 #include <fstream>
 #include <array>
 #include <string>
+#include <math.h>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/array.hpp>
 
 int main()
 {
-    std::string filename;
-    std::cout << "Filename: ";
-    std::cin >> filename;
-    std::string outname;
-    std::cout << "Output fileprefix: ";
-    std::cin >> outname;
+    std::string filename = "E:\\Programming\\Project\\data\\final.txt";
+    std::string outname = "../../../ngramData/grams";
     std::string datain;
     {
         std::ifstream fin(filename);
@@ -53,21 +50,28 @@ int main()
         }
         quadgramFrequencies->at(index)++;
     }
+    
+    std::array<float, 1024> bigramProbabilities{};
+    std::array<float, 32768> trigramProbabilities{};
+    std::array<float, 1048576>* quadgramProbabilities = new std::array<float, 1048576>{};
+    for (int i = 0; i < 1024; i++) bigramProbabilities[i] = (bigramFrequencies[i] > 1 ? std::log(bigramFrequencies[i]) : 0);
+    for (int i = 0; i < 32768; i++) trigramProbabilities[i] = (trigramFrequencies[i] > 1 ? std::log(trigramFrequencies[i]) : 0);
+    for (int i = 0; i < 1048576; i++) quadgramProbabilities->at(i) = (quadgramFrequencies->at(i) > 1 ? std::log(quadgramFrequencies->at(i)) : 0);
 
     {
         std::ofstream outfile(outname + "bi.bin", std::ios::binary);
         boost::archive::binary_oarchive oa(outfile);
-        oa << bigramFrequencies;
+        oa << bigramProbabilities;
     }
     {
         std::ofstream outfile(outname + "tri.bin", std::ios::binary);
         boost::archive::binary_oarchive oa(outfile);
-        oa << trigramFrequencies;
+        oa << trigramProbabilities;
     }
     {
         std::ofstream outfile(outname + "quad.bin", std::ios::binary);
         boost::archive::binary_oarchive oa(outfile);
-        oa << *quadgramFrequencies;
+        oa << *quadgramProbabilities;
     }
 
 
