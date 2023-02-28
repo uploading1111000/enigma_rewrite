@@ -5,7 +5,7 @@ project(Solver)
 find_package(Python 3.6 COMPONENTS Interpreter Development REQUIRED)
 set(BOOST_ROOT = "C:/Boost/boost_1_81_0")
 set(Boost_USE_STATIC_LIBS ON)
-set(Boost_ARCHITECTURE "-x64") #used only for mingw compilation
+#set(Boost_ARCHITECTURE "-x64") used only for mingw compilation
 find_package(Boost 1.81.0 REQUIRED COMPONENTS serialization)
 add_subdirectory(pybind11)
 add_subdirectory(simulation)
