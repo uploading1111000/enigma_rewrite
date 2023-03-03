@@ -24,7 +24,7 @@ public:
 	Rotor* getRotor(int N) { return &rotors[N]; }
 	Reflector* getReflector() { return &reflector; };
 	Plugboard* getPlugboard() { return &plugboard; };
-	MachineSpecification* getSpecification() { return specification.get(); };
+	virtual MachineSpecification* getSpecification() { return specification.get(); };
 	void mutateRotors();
 	virtual int encryptLetter(int);
 	char encryptLetter(char);

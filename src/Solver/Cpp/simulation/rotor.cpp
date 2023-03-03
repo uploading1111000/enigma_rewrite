@@ -42,12 +42,12 @@ bool Rotor::mutate(bool previous)
 	bool flag = previous;
 	switch (place) {
 	case left:
-		if (turnpoints.contains(position) && flag) {
+		if ((turnpoints[0]==position || turnpoints[1] == position) && flag) {
 			next = true;
 		}
 		break;
 	case middle:
-		if (turnpoints.contains(position)) {
+		if (turnpoints[0] == position || turnpoints[1] == position) {
 			flag = true;
 			next = true;
 		}

@@ -20,9 +20,9 @@ MachineSpecification::MachineSpecification(std::string filepath)
 		for (int i = 0; i < wires.size(); i++) {
 			wiring[i] = (int)wires[i]-64;
 		}
-		std::set<int> turnovers;
+		std::array<int,2> turnovers;
 		for (int i = 0; i < turns.size(); i++) {
-			turnovers.insert((int)turns[i][0] - 64);
+			turnovers[i] = (int)turns[i][0] - 64;
 		}
 		RotorSpecification rot(j,wiring,turnovers);
 		j++;
