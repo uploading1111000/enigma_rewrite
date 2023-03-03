@@ -20,6 +20,7 @@ int main(){
 	std::string start;
 	std::getline(std::cin, start);
 	start = clean(start);
+	std::vector<int> ciphertext = vectorFromString(start);
 	std::cout << start.size() << std::endl;
 	std::vector<std::array<char, 2>> plugs;
 	std::set<int> used;
@@ -32,7 +33,7 @@ int main(){
 					if (!used.contains((char)b) && a != b) {
 						plugs.push_back({ (char)a,(char)b });
 						Machine machine(spec, { 2,1,0 }, 1, plugs);
-						std::vector<int> result = machine.encryptWord(vectorFromString(start));
+						std::vector<int> result = machine.encryptWord(ciphertext);
 						j++;
 						float score = tri.score(result);
 						if (score > max.first) {
