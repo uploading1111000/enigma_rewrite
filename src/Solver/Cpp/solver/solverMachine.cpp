@@ -1,5 +1,7 @@
 #include "solverMachine.h"
+#include "solverMachine.h"
 #include <iostream>
+
 
 SolverMachine::SolverMachine(MachineSpecification& spec, std::optional<std::array<int,3>> rotorIndexes, std::optional<int> reflector, 
 		std::optional<std::vector<std::array<char, 2>>> plugPairs, std::string ciphertextIn, Analyser* analyserIn):
@@ -8,8 +10,12 @@ SolverMachine::SolverMachine(MachineSpecification& spec, std::optional<std::arra
 	analyser = analyserIn;
 }
 
+SolverMachine::SolverMachine()
+{
+}
+
 void SolverMachine::findBestRotors(){
-	std::pair<std::pair<std::array<int, 3>, std::array<int, 3>>, float> max{ {{},{}},0 };
+	maxSetting max{ {},{},0 };
 	int numberOfRotors = this->getSpecification()->getRotorLength();
 	int totalL = numberOfRotors * (numberOfRotors - 1) * (numberOfRotors - 2);
 	int j = 0;
@@ -21,27 +27,25 @@ void SolverMachine::findBestRotors(){
 			for (int r = 0; r < numberOfRotors; r++){
 				if (r == l || r == m) continue;
 				rotors[right] = this->getSpecification()->getRotor(r);
-				std::pair<std::array<int, 3>, float> best = findBestPositions();
+				maxPosition best = findBestPositions();
 				//std::cout << best.second << " " << rotors[left].getRotorID() << " " << rotors[middle].getRotorID() << " " << rotors[right].getRotorID() << "\n";
 				std::cout << j++ << " / " << totalL << "\n";
-				if (best.second > max.second){
+				if (best.score > max.score){
 					//std::cout << best.first[0] << " " << best.first[1] << " " << best.first[2] << "\n";
-					max = {{{l,m,r},best.first},best.second};
+					max = {{l,m,r},best.pos,best.score};
 				}
 			}
 		}
 	}
-	std::pair<std::array<int, 3>, std::array<int, 3>> settings;
-	settings = max.first;
 	for (int i = 0; i < 3; i++) {
-		rotors[i] = this->getSpecification()->getRotor(settings.first[i]);
-		rotors[i].setPosition(settings.second[i]);
-		initialPositions[i] = settings.second[i];
+		rotors[i] = this->getSpecification()->getRotor(max.rotors[i]);
+		rotors[i].setPosition(max.pos[i]);
+		initialPositions[i] = max.pos[i];
 	}
 }
 
-std::pair<std::array<int,3>, float> SolverMachine::findBestPositions(){
-	std::pair<std::array<int,3>,float> max = {{1,1,1},0};
+maxPosition SolverMachine::findBestPositions(){
+	maxPosition max = {{1,1,1},0};
 	for (int li = 1; li < 27; li++){
 		for (int mi = 1; mi < 27; mi++){
 			for(int ri = 1; ri < 27; ri++){
@@ -50,7 +54,7 @@ std::pair<std::array<int,3>, float> SolverMachine::findBestPositions(){
 				rotors[right].setPosition(ri);
 				std::vector<int> result = this->encryptWord(ciphertext);
 				float score = analyser->score(result);
-				if ( score > max.second){
+				if ( score > max.score){
 					max = {{li,mi,ri},score};
 				}
 			}

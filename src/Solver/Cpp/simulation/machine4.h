@@ -1,6 +1,6 @@
 #include "machine.h"
 #include "machineSpecification4.h"
-class MachineFour : public Machine {
+class MachineFour : virtual public Machine {
 private:
 	std::unique_ptr<MachineSpecificationFour> specification;
 protected:

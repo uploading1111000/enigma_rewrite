@@ -4,7 +4,8 @@ target_link_libraries(solverMachine PUBLIC
 	wiringutil
 )
 add_library(solverMachineFour solverMachine4.cpp)
-target_link_libraries(solverMachine PUBLIC
+target_link_libraries(solverMachineFour PUBLIC
 	machineFour
 	wiringutil
+	solverMachine
 )

@@ -27,7 +27,7 @@ target_link_libraries(main PUBLIC
         IOC
         NGram
 		solverMachine
-        solverMachine4
+        solverMachineFour
 )
 
 target_link_libraries(dataBuilder PUBLIC
