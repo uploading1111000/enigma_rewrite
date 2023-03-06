@@ -35,3 +35,6 @@ add_library(machineFour machine4.cpp)
 target_link_libraries(machineFour PUBLIC
 		machine
 )
+target_include_directories(machineFour PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}
+)
