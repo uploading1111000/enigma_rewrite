@@ -5,6 +5,7 @@
 #pragma once
 
 #define triple std::array<int,3>
+#define double std::array<int,2>
 
 struct maxPosition {
 	triple pos;
@@ -17,9 +18,20 @@ struct maxSetting {
 	float score;
 };
 
-class SolverMachine : public Machine {
+struct maxRings {
+	double rings;
+	float score;
+};
+
+struct maxPlugs {
+	Plugboard plug;
+	float score;
+	std::array<int,2> newPair;
+};
+
+class SolverMachine : virtual public Machine {
 protected:
-	std::array<Rotor, 3> initialPositions;
+	std::array<int, 3> initialPositions;
 	Analyser* analyser;
 	std::vector<int> ciphertext;
 	SolverMachine();
@@ -28,8 +40,8 @@ public:
 		std::optional<std::vector<std::array<char, 2>>> plugPairs, std::string ciphertext, Analyser*);
 	maxPosition findBestPositions();
 	virtual float findBestRotors();
-	void findBestRings();
-	void findBestPlugs();
-	
+	float findBestRings();
+	float findBestPlugs();
+	void changeAnalyser(Analyser* analyserIn) { analyser = analyserIn; };
 
 };

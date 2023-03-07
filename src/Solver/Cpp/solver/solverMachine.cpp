@@ -47,13 +47,63 @@ float SolverMachine::findBestRotors(){
 	return max.score;
 }
 
-void SolverMachine::findBestRings()
+float SolverMachine::findBestRings()
 {
-
+	maxRings max = { {},0 };
+	for (int r = 1; r < 27; r++) {
+		for (int m = 1; m < 27; m++) {
+			rotors[right].setRing(r);
+			int rpos = initialPositions[right] - r;
+			normalise(rpos);
+			rotors[right].setRing(rpos);
+			rotors[middle].setRing(m);
+			int mpos = initialPositions[middle] - m;
+			normalise(mpos);
+			rotors[middle].setRing(mpos);
+			rotors[left].setPosition(initialPositions[left]);
+			std::vector<int> result = this->encryptWord(ciphertext);
+			float score = analyser->score(result);
+			if (score > max.score) {
+				max = { {r,m},score };
+			}
+		}
+	}
+	rotors[right] = max.rings[0];
+	rotors[middle] = max.rings[1]; //this is backwards to how you may expect
+	return max.score;
 }
 
-void SolverMachine::findBestPlugs()
+float SolverMachine::findBestPlugs()
 {
+	maxPlugs max{ plugboard,0 ,{} };
+	std::set<int> used;
+	for (int i = 0; i < 26; i++) {
+		if (plugboard.getWiring()[i] != i + 1) {
+			used.insert(i + 1);
+		}
+	}
+	for (int i = 0; i < 13; i++) {
+		bool changed = false;
+		for (int a = 1; a < 27; a++) {
+			if (used.contains(a)) continue;
+			for (int b = 1; b < a; b++) {
+				if (used.contains(b)) continue;
+				plugboard.addPlug({ a,b });
+				std::vector<int> result = this->encryptWord(ciphertext);
+				float score = analyser->score(result);
+				if (score > max.score) {
+					changed = true;
+					max = { plugboard,score,{a,b} };
+				}
+				plugboard.removeLast();
+			}
+		}
+		plugboard = max.plug;
+		used.insert(max.newPair[0]);
+		used.insert(max.newPair[1]);
+		if (!changed) break;
+	}
+	return max.score;
 }
 
 maxPosition SolverMachine::findBestPositions(){
