@@ -10,6 +10,7 @@ public:
 	void setRotorFourPosition(int position) { rotor4.setPosition(position); };
 	void setRotorFourRing(int ring) { rotor4.setRing(ring); };
 	Rotor* getRotorFour() { return &rotor4; };
+	MachineSpecificationFour* getSpecification() { return specification.get(); };
 	int encryptLetter(int);
 	using Machine::encryptLetter;
 	using Machine::encryptWord;

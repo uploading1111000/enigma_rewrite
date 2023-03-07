@@ -16,6 +16,7 @@ Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int re
 	}
 	reflector = specification->getReflector(reflectorId);
 	plugboard = Plugboard(plugboardPairs);
+	std::cout << "machine initializer called";
 }
 
 void Machine::setPositions(const std::array<int, 3> &positions)

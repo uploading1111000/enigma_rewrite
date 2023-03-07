@@ -12,7 +12,7 @@ struct maxPosition4 {
 };
 
 struct maxSetting4 {
-	triple pos;
+	quadruple pos;
 	quadruple rotors;
 	float score;
 };
@@ -21,6 +21,6 @@ class SolverMachineFour : public MachineFour, public SolverMachine {
 public:
 	SolverMachineFour(MachineSpecificationFour&, std::optional<std::array<int, 3>> rotorIndexes, std::optional<int> rotor4, std::optional<int> reflector,
 		std::optional<std::vector<std::array<char, 2>>> plugPairs, std::string ciphertext, Analyser*);
-	void findBestRotors();
-	void findBestRotorsWith4();
+	float findBestRotors();
+	float findBestRotorsWith4();
 };

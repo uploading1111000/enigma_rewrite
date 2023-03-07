@@ -3,7 +3,7 @@
 class Reflector : public Wirings {
 public:
 	char getReflectorID() {             
-		return char(getID() + 65);
+		return char(getID() + 66);
 	}
 	using Wirings::Wirings;
 };

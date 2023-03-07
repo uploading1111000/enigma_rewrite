@@ -17,17 +17,17 @@ struct maxSetting {
 	float score;
 };
 
-class SolverMachine : virtual public Machine {
+class SolverMachine : public Machine {
 protected:
 	std::array<Rotor, 3> initialPositions;
 	Analyser* analyser;
 	std::vector<int> ciphertext;
+	SolverMachine();
 public:
 	SolverMachine(MachineSpecification&, std::optional<std::array<int, 3>> rotorIndexes, std::optional<int> reflector,
 		std::optional<std::vector<std::array<char, 2>>> plugPairs, std::string ciphertext, Analyser*);
-	SolverMachine();
 	maxPosition findBestPositions();
-	virtual void findBestRotors();
+	virtual float findBestRotors();
 	void findBestRings();
 	void findBestPlugs();
 	

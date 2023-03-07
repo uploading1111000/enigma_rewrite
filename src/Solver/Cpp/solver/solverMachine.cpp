@@ -1,11 +1,13 @@
 #include "solverMachine.h"
 #include "solverMachine.h"
+#include "solverMachine.h"
+#include "solverMachine.h"
 #include <iostream>
 
 
 SolverMachine::SolverMachine(MachineSpecification& spec, std::optional<std::array<int,3>> rotorIndexes, std::optional<int> reflector, 
 		std::optional<std::vector<std::array<char, 2>>> plugPairs, std::string ciphertextIn, Analyser* analyserIn):
-		Machine::Machine(spec,rotorIndexes ? rotorIndexes.value() : std::array<int,3>{2, 1, 0}, reflector ? reflector.value() : 1, plugPairs ? plugPairs.value() : std::vector<std::array<char,2>>{}) {
+		Machine::Machine(spec,rotorIndexes ? rotorIndexes.value() : std::array<int,3>{2, 1, 0}, reflector ? reflector.value() : 0, plugPairs ? plugPairs.value() : std::vector<std::array<char,2>>{}) {
 	ciphertext = vectorFromString(ciphertextIn);
 	analyser = analyserIn;
 }
@@ -14,7 +16,7 @@ SolverMachine::SolverMachine()
 {
 }
 
-void SolverMachine::findBestRotors(){
+float SolverMachine::findBestRotors(){
 	maxSetting max{ {},{},0 };
 	int numberOfRotors = this->getSpecification()->getRotorLength();
 	int totalL = numberOfRotors * (numberOfRotors - 1) * (numberOfRotors - 2);
@@ -42,6 +44,16 @@ void SolverMachine::findBestRotors(){
 		rotors[i].setPosition(max.pos[i]);
 		initialPositions[i] = max.pos[i];
 	}
+	return max.score;
+}
+
+void SolverMachine::findBestRings()
+{
+
+}
+
+void SolverMachine::findBestPlugs()
+{
 }
 
 maxPosition SolverMachine::findBestPositions(){

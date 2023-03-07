@@ -6,6 +6,7 @@
 #include <memory>
 #include <array>
 #include <vector>
+#include <iostream>
 #pragma once
 class Machine {
 private:
@@ -16,7 +17,7 @@ protected:
 	Plugboard plugboard;
 public:
 	Machine(MachineSpecification&, std::array<int,3>, int, std::vector<std::array<char, 2>>);
-	Machine() {}; //don't call this
+	Machine() { std::cout << "machine initializer called"; }; //don't call this
 	void setPositions(const std::array<int, 3>&);
 	void setPosition(int N, int position);
 	void setRings(std::array<int, 3>);
