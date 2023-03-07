@@ -17,6 +17,7 @@ public:
 	Rotor(int, int, Place,const RotorSpecification&);
 	Rotor(int, int, const RotorSpecification&);
 	Rotor(const RotorSpecification&);
+	Rotor(const RotorSpecification&, Place);
 	Rotor(int);
 	Rotor(std::string);
 	Rotor();

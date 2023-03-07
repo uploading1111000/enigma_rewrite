@@ -16,11 +16,6 @@ public:
 			wiring[CONVERT(pair[1]) - 1] = CONVERT(pair[0]);
 		}
 	}
-	void addPlug(std::array<char, 2> pair) { //65 = 1
-		wiring[CONVERT(pair[0]) - 1] = CONVERT(pair[1]);                                    //TODO: check for repeated letters
-		wiring[CONVERT(pair[1]) - 1] = CONVERT(pair[0]);
-		last = { (int) pair[0]-64,(int) pair[1]-64 };
-	}
 	void addPlug(std::array<int, 2> pair) { //1 based
 		wiring[pair[0] - 1] = pair[1];                                    //TODO: check for repeated letters
 		wiring[pair[1] - 1] = pair[0];

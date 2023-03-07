@@ -2,6 +2,7 @@
 #include "solverMachine.h"
 #include "solverMachine.h"
 #include "solverMachine.h"
+#include "solverMachine.h"
 #include <iostream>
 
 
@@ -10,6 +11,9 @@ SolverMachine::SolverMachine(MachineSpecification& spec, std::optional<std::arra
 		Machine::Machine(spec,rotorIndexes ? rotorIndexes.value() : std::array<int,3>{2, 1, 0}, reflector ? reflector.value() : 0, plugPairs ? plugPairs.value() : std::vector<std::array<char,2>>{}) {
 	ciphertext = vectorFromString(ciphertextIn);
 	analyser = analyserIn;
+	for (int i = 0; i < 3; i++) {
+		if (rotorIndexes) setRotor(i, rotorIndexes.value()[i]);
+	}
 }
 
 SolverMachine::SolverMachine()
@@ -22,13 +26,13 @@ float SolverMachine::findBestRotors(){
 	int totalL = numberOfRotors * (numberOfRotors - 1) * (numberOfRotors - 2);
 	int j = 0;
 	for (int l = 0; l < numberOfRotors; l++){
-		rotors[left] = this->getSpecification()->getRotor(l);
+		setRotor(left, l);
 		for (int m = 0; m < numberOfRotors; m++){
 			if (m==l) continue;
-			rotors[middle] = this->getSpecification()->getRotor(m);
+			setRotor(middle, m);
 			for (int r = 0; r < numberOfRotors; r++){
 				if (r == l || r == m) continue;
-				rotors[right] = this->getSpecification()->getRotor(r);
+				setRotor(right, r);
 				maxPosition best = findBestPositions();
 				//std::cout << best.second << " " << rotors[left].getRotorID() << " " << rotors[middle].getRotorID() << " " << rotors[right].getRotorID() << "\n";
 				std::cout << j++ << " / " << totalL << "\n";
@@ -40,7 +44,8 @@ float SolverMachine::findBestRotors(){
 		}
 	}
 	for (int i = 0; i < 3; i++) {
-		rotors[i] = this->getSpecification()->getRotor(max.rotors[i]);
+		std::cout << max.rotors[i];
+		setRotor(i, max.rotors[i]);
 		rotors[i].setPosition(max.pos[i]);
 		initialPositions[i] = max.pos[i];
 	}
@@ -68,8 +73,15 @@ float SolverMachine::findBestRings()
 			}
 		}
 	}
-	rotors[right] = max.rings[0];
-	rotors[middle] = max.rings[1]; //this is backwards to how you may expect
+	rotors[right].setRing(max.rings[0]);
+	rotors[middle].setRing(max.rings[1]);
+	initialPositions[right] = initialPositions[right] - max.rings[0];
+	normalise(initialPositions[right]);
+	initialPositions[middle] = initialPositions[middle] - max.rings[1];
+	normalise(initialPositions[middle]);
+	for (int i = 0; i < 3; i++) {
+		rotors[i].setPosition(initialPositions[i]);
+	}
 	return max.score;
 }
 
@@ -89,6 +101,9 @@ float SolverMachine::findBestPlugs()
 			for (int b = 1; b < a; b++) {
 				if (used.contains(b)) continue;
 				plugboard.addPlug({ a,b });
+				for (int j = 0; j < 3; j++) {
+					rotors[j].setPosition(initialPositions[j]);
+				}
 				std::vector<int> result = this->encryptWord(ciphertext);
 				float score = analyser->score(result);
 				if (score > max.score) {
@@ -104,6 +119,12 @@ float SolverMachine::findBestPlugs()
 		if (!changed) break;
 	}
 	return max.score;
+}
+
+void SolverMachine::setPosition(int N, int pos)
+{
+	rotors[N].setPosition(pos);
+	initialPositions[N] = pos;
 }
 
 maxPosition SolverMachine::findBestPositions(){

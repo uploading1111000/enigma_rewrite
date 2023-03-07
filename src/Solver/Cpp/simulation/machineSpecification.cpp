@@ -9,7 +9,7 @@ MachineSpecification::MachineSpecification(std::string filepath)
 {
 	std::ifstream file(filepath);
 	json data = json::parse(file);
-	int N = data["size"];
+	//int N = data["size"];
 	name = data["name"];
 	json rotors = data["rotors"];
 	int j = 0;

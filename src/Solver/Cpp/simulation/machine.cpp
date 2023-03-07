@@ -1,4 +1,6 @@
 #include "machine.h"
+#include "machine.h"
+#include "machine.h"
 
 inline int convert(char in) {
 	return (int) in - 64;
@@ -16,7 +18,6 @@ Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int re
 	}
 	reflector = specification->getReflector(reflectorId);
 	plugboard = Plugboard(plugboardPairs);
-	std::cout << "machine initializer called";
 }
 
 void Machine::setPositions(const std::array<int, 3> &positions)
@@ -41,6 +42,30 @@ void Machine::setRings(std::array<int, 3> rings)
 void Machine::setRing(int N, int ring)
 {
 	rotors[N].setRing(ring);
+}
+
+void Machine::setRotor(Place place, int id)
+{
+	rotors[place] = Rotor(this->getSpecification()->getRotor(id), place);
+}
+
+void Machine::setRotor(int place, int id)
+{
+	switch (place) {
+	case 0:
+		rotors[place] = Rotor(this->getSpecification()->getRotor(id), left);
+		break;
+	case 1:
+		rotors[place] = Rotor(this->getSpecification()->getRotor(id), middle);
+		break;
+	case 2:
+		rotors[place] = Rotor(this->getSpecification()->getRotor(id), right);
+		break;
+	default:
+		rotors[place] = Rotor(this->getSpecification()->getRotor(id), turnless);
+		break;
+	}
+	
 }
 
 void Machine::mutateRotors()

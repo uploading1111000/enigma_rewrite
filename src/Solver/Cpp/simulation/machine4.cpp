@@ -1,4 +1,5 @@
 #include "machine4.h"
+#include "machine4.h"
 
 MachineFour::MachineFour(MachineSpecificationFour& spec, std::array<int, 3> rotorIds,int rotor4Id, int reflectorId, std::vector<std::array<char, 2>> plugboardPairs)
 {
@@ -9,6 +10,11 @@ MachineFour::MachineFour(MachineSpecificationFour& spec, std::array<int, 3> roto
 	reflector = specification->getReflector(reflectorId);
 	plugboard = Plugboard(plugboardPairs);
 	rotor4 = Rotor(specification->getRotorFour(rotor4Id));
+}
+
+void MachineFour::setRotorFour(int id)
+{
+	rotor4 = Rotor(this->getSpecification()->getRotorFour(id));
 }
 
 int MachineFour::encryptLetter(int start)

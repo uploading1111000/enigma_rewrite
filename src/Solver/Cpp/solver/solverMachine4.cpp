@@ -13,13 +13,13 @@ float SolverMachineFour::findBestRotors() {
 	int totalL = numberOfRotors * (numberOfRotors - 1) * (numberOfRotors - 2);
 	int j = 0;
 	for (int l = 0; l < numberOfRotors; l++) {
-		rotors[left] = this->getSpecification()->getRotor(l);
+		setRotor(left, l);
 		for (int m = 0; m < numberOfRotors; m++) {
 			if (m == l) continue;
-			rotors[middle] = this->getSpecification()->getRotor(m);
+			setRotor(middle, m);
 			for (int r = 0; r < numberOfRotors; r++) {
 				if (r == l || r == m) continue;
-				rotors[right] = this->getSpecification()->getRotor(r);
+				setRotor(right, r);
 				for (int p = 1; p < 27; p++) {
 					MachineFour::rotor4.setPosition(p);
 					maxPosition best = findBestPositions();
@@ -34,7 +34,7 @@ float SolverMachineFour::findBestRotors() {
 		}
 	}
 	for (int i = 0; i < 3; i++) {
-		rotors[i] = this->getSpecification()->getRotor(max.rotors[i]);
+		setRotor(0,max.rotors[i]);
 		rotors[i].setPosition(max.pos[i]);
 		initialPositions[i] = max.pos[i];
 	}
@@ -46,7 +46,7 @@ float SolverMachineFour::findBestRotorsWith4()
 {
 	maxSetting4 max{ {},{},0 };
 	for (int i = 0; i < this->getSpecification()->getRotorFourSize(); i++) {
-		rotor4 = this->getSpecification()->getRotorFour(i);
+		setRotorFour(i);
 		float score = findBestRotors();
 		if (score > max.score) {
 			max = { 
@@ -60,7 +60,7 @@ float SolverMachineFour::findBestRotorsWith4()
 		rotors[i] = this->getSpecification()->getRotor(max.rotors[i]);
 		rotors[i].setPosition(max.pos[i]);
 	}
-	rotor4 = this->getSpecification()->getRotorFour(max.rotors[3]);
+	setRotorFour(max.rotors[3]);
 	rotor4.setPosition(max.pos[3]);
 	return max.score;
 }

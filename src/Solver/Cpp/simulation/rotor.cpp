@@ -1,4 +1,5 @@
 #include "rotor.h"
+#include "rotor.h"
 #include <iostream>
 
 Rotor::Rotor(int pos, int ring, Place pla, const RotorSpecification &model):
@@ -19,6 +20,12 @@ Rotor::Rotor(int pos, int ring, const RotorSpecification &model) :
 Rotor::Rotor(RotorSpecification const &model):
 	RotorSpecification::RotorSpecification(model)
 {
+}
+
+Rotor::Rotor(const RotorSpecification& model, Place pIn):
+	RotorSpecification::RotorSpecification(model)
+{
+	place = pIn;
 }
 
 Rotor::Rotor(int ID):

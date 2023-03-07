@@ -13,8 +13,8 @@ struct maxPosition {
 };
 
 struct maxSetting {
-	triple pos;
 	triple rotors;
+	triple pos;
 	float score;
 };
 
@@ -43,5 +43,5 @@ public:
 	float findBestRings();
 	float findBestPlugs();
 	void changeAnalyser(Analyser* analyserIn) { analyser = analyserIn; };
-
+	void setPosition(int N, int pos);
 };
