@@ -22,10 +22,28 @@ int main(){
 	std::getline(std::cin, start);
 	start = clean(start);
 	std::cout << start.size() << "\n";
-	SolverMachine solver(spec, std::optional<std::array<int, 3>> { {2, 4, 3}}, std::optional<int> {1}, std::optional<std::vector<std::array<char, 2>>>{}, start, & IOCO);
-	solver.setPosition(0, 8);
-	solver.setPosition(1, 23);
-	solver.setPosition(2, 17);
+	SolverMachine solver(spec, std::optional<std::array<int, 3>> { {4,1,3}}, std::optional<int> {1}, std::optional<std::vector<std::array<char, 2>>>{}, start, & IOCO);
+	solver.setPosition(left, 6);
+	solver.setPosition(middle, 15);
+	solver.setPosition(right, 14);
+	std::cout << solver.encryptLetterVerbose('U');
+	/*solver.findBestRotors();
+	std::cout << "rotors found\n";
+	for (int i = 0; i < 3; i++) {
+		std::cout << solver.getRotor(i)->getRotorID() << " ";
+	}
+	std::cout << std::endl;
+	for (int i = 0; i < 3; i++) {
+		std::cout << solver.getRotor(i)->getPosition() << " ";
+	}
+	std::cout << std::endl;
+	std::string result = solver.encryptWord(start);
+	std::cout << result << std::endl;
+	std::cout << IOCO.score(vectorFromString(result)) << std::endl;
+	std::string real;
+	std::getline(std::cin, real);
+	real = clean(real);
+	std::cout << IOCO.score(vectorFromString(real)) << std::endl;
 	solver.findBestRings();
 	std::cout << "rings found\n";
 	for (int i = 0; i < 3; i++) {
@@ -61,5 +79,5 @@ int main(){
 		}
 	}
 	std::cout << std::endl;
-	std::cout << solver.encryptWord(start);
+	std::cout << solver.encryptWord(start);*/
 }

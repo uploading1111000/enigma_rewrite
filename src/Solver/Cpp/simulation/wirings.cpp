@@ -16,7 +16,7 @@ int Wirings::TransformReverse(int in)
 void Wirings::reverse()
 {
 	if (reversePointer != nullptr) return;
-	reversePointer = new Wirings(ID);
+	reversePointer = std::shared_ptr<Wirings>(new Wirings(ID));
 	reversePointer->generateReverse(this->wiring);
 }
 

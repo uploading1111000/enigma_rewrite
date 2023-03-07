@@ -34,7 +34,7 @@ float SolverMachine::findBestRotors(){
 				if (r == l || r == m) continue;
 				setRotor(right, r);
 				maxPosition best = findBestPositions();
-				//std::cout << best.second << " " << rotors[left].getRotorID() << " " << rotors[middle].getRotorID() << " " << rotors[right].getRotorID() << "\n";
+				std::cout << best.score << " " << rotors[left].getRotorID() << " " << rotors[middle].getRotorID() << " " << rotors[right].getRotorID() << "\n";
 				std::cout << j++ << " / " << totalL << "\n";
 				if (best.score > max.score){
 					//std::cout << best.first[0] << " " << best.first[1] << " " << best.first[2] << "\n";
@@ -44,7 +44,6 @@ float SolverMachine::findBestRotors(){
 		}
 	}
 	for (int i = 0; i < 3; i++) {
-		std::cout << max.rotors[i];
 		setRotor(i, max.rotors[i]);
 		rotors[i].setPosition(max.pos[i]);
 		initialPositions[i] = max.pos[i];

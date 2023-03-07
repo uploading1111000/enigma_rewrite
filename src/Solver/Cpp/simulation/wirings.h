@@ -1,4 +1,5 @@
 #include <array>
+#include <memory>
 #pragma once
 const std::array<int, 26> sequential = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26 };
 static inline void normalise(int& in) {
@@ -12,7 +13,7 @@ class Wirings {
 protected:
 	int ID;
 	std::array<int, 26> wiring;
-	Wirings* reversePointer;    //Instead of regenerating a backwards wiring path, a child wiring is created
+	std::shared_ptr<Wirings> reversePointer;    //Instead of regenerating a backwards wiring path, a child wiring is created
 	void generateReverse(std::array<int, 26> forward);
 public:
 	void setID(int id) {
@@ -31,9 +32,7 @@ public:
 	Wirings(int ID);
 	Wirings(int ID, std::array<int, 26> wiring);
 	Wirings();
-	~Wirings() { 
-		delete reversePointer;                             //Child wiring has nullptr so will not delete parent
-	};
+	~Wirings() {};
 	int Transform(int in);                                 //Transforms a letter as though going forward through a wiring path
 	int TransformReverse(int in);                          //Transforms a letter as though going backward through a wiring path
 };
