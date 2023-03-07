@@ -20,9 +20,13 @@ public:
 		wiring[pair[0] - 1] = pair[1];                                    //TODO: check for repeated letters
 		wiring[pair[1] - 1] = pair[0];
 		last = { pair[0],pair[1] };
+		delete reversePointer;
+		reversePointer = nullptr;
 	}
 	void removeLast() {
 		wiring[last.first-1] = last.first;
 		wiring[last.second-1] = last.second;
+		delete reversePointer;
+		reversePointer = nullptr;
 	}
 };
