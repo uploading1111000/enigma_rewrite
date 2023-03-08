@@ -45,9 +45,9 @@ float SolverMachine::findBestRotors(){
 	}
 	for (int i = 0; i < 3; i++) {
 		setRotor(i, max.rotors[i]);
-		rotors[i].setPosition(max.pos[i]);
 		initialPositions[i] = max.pos[i];
 	}
+	homePosition();
 	return max.score;
 }
 
@@ -78,9 +78,7 @@ float SolverMachine::findBestRings()
 	normalise(initialPositions[right]);
 	initialPositions[middle] = initialPositions[middle] + max.rings[1] - 1;
 	normalise(initialPositions[middle]);
-	for (int i = 0; i < 3; i++) {
-		rotors[i].setPosition(initialPositions[i]);
-	}
+	homePosition();
 	return max.score;
 }
 
@@ -115,8 +113,10 @@ float SolverMachine::findBestPlugs()
 		plugboard = max.plug;
 		used.insert(max.newPair[0]);
 		used.insert(max.newPair[1]);
+		std::cout << char(max.newPair[0] + 64) << char(max.newPair[1] + 64) << " ";
 		if (!changed) break;
 	}
+	homePosition();
 	return max.score;
 }
 
@@ -124,6 +124,17 @@ void SolverMachine::setPosition(int N, int pos)
 {
 	rotors[N].setPosition(pos);
 	initialPositions[N] = pos;
+}
+
+void SolverMachine::setPositions(std::array<int, 3> in)
+{
+	Machine::setPositions(in);
+	initialPositions = in;
+}
+
+void SolverMachine::homePosition()
+{
+	Machine::setPositions(initialPositions);
 }
 
 maxPosition SolverMachine::findBestPositions(){

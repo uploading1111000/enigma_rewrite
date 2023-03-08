@@ -44,4 +44,6 @@ public:
 	float findBestPlugs();
 	void changeAnalyser(Analyser* analyserIn) { analyser = analyserIn; };
 	void setPosition(int N, int pos);
+	void setPositions(std::array<int, 3>);
+	void homePosition();
 };
