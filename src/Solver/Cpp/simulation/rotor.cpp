@@ -48,7 +48,7 @@ bool Rotor::mutate(bool previous)
 	bool next = false;
 	bool flag = previous;
 	switch (place) {
-	case left:
+	case right:
 		if ((turnpoints[0]==position || turnpoints[1] == position) && flag) {
 			next = true;
 		}
