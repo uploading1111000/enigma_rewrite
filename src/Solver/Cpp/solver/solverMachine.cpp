@@ -57,13 +57,13 @@ float SolverMachine::findBestRings()
 	for (int r = 1; r < 27; r++) {
 		for (int m = 1; m < 27; m++) {
 			rotors[right].setRing(r);
-			int rpos = initialPositions[right] - r;
+			int rpos = initialPositions[right] + r - 1;
 			normalise(rpos);
-			rotors[right].setRing(rpos);
+			rotors[right].setPosition(rpos);
 			rotors[middle].setRing(m);
-			int mpos = initialPositions[middle] - m;
+			int mpos = initialPositions[middle] + m - 1;
 			normalise(mpos);
-			rotors[middle].setRing(mpos);
+			rotors[middle].setPosition(mpos);
 			rotors[left].setPosition(initialPositions[left]);
 			std::vector<int> result = this->encryptWord(ciphertext);
 			float score = analyser->score(result);
@@ -74,9 +74,9 @@ float SolverMachine::findBestRings()
 	}
 	rotors[right].setRing(max.rings[0]);
 	rotors[middle].setRing(max.rings[1]);
-	initialPositions[right] = initialPositions[right] - max.rings[0];
+	initialPositions[right] = initialPositions[right] + max.rings[0] - 1;
 	normalise(initialPositions[right]);
-	initialPositions[middle] = initialPositions[middle] - max.rings[1];
+	initialPositions[middle] = initialPositions[middle] + max.rings[1] - 1;
 	normalise(initialPositions[middle]);
 	for (int i = 0; i < 3; i++) {
 		rotors[i].setPosition(initialPositions[i]);

@@ -17,6 +17,9 @@ std::string clean(std::string in) {
 int main(){
 	TriGram tri("../../../ngramData/gramstri.bin");
 	IndexOfCoincidenceOptimised IOCO;
+	std::cout << tri.score(vectorFromString("QDDENIGMAHASANELECTROMECHARCJALROTORMECHANISMTHATSCRNGOLESTHELETTERSOFTHEALPHAEIBINTYPICALUSEONEPERSONENDZZSTEXTONTHEENIGMASKEYBOADPFNDANOTHERPERSONWRITESDOBLDJJMNBKOAGMZDJGQZPELGYTMGOVAMECZNTUNBTRCGKPOATHUISMNWGOMINJRKKMJMBFEUMFEIBNXAHFQUTWCHWUUVVSRCAUWWDUHCFQFUOSIBDIDSUZIQUIAQQBNALQHHKDMZIMYXGTGRTJCAZPCXOSROTTMCLKBODJHZRCBMHXTHBTSMUECDIBSGBZJXOHVOICTPOHPCLJWNZAYVNOSHXKJLGSTDPDNITQDSPYPRRZQELIGHTSWITHEACHKEYPRESL"));
+	std::cout << "\n";
+	std::cout << tri.score(vectorFromString(clean("The Enigma has an electromechanical rotor mechanism that scrambles the 26 letters of the alphabet. In typical use, one person enters text on the Enigma's keyboard and another person writes down which of the 26 lights above the keyboard illuminated at each key press. If plain text is entered, the illuminated letters are the ciphertext. Entering ciphertext transforms it back into readable plaintext. The rotor mechanism changes the electrical connections between the keys and the lights with each keypress.")));
 	MachineSpecification spec("../../../simulation/machineJsons/EnigmaI.json");
 	std::string start;
 	std::getline(std::cin, start);
@@ -34,6 +37,7 @@ int main(){
 	}
 	std::cout << std::endl;
 	std::cout << solver.encryptWord(start) << std::endl;
+	solver.changeAnalyser(&tri);
 	solver.findBestRings();
 	std::cout << "rings found\n";
 	for (int i = 0; i < 3; i++) {
@@ -49,7 +53,6 @@ int main(){
 	}
 	std::cout << std::endl;
 	std::cout << solver.encryptWord(start);
-
 	/*
 	solver.findBestPlugs();
 	std::cout << "plugs found\n";
