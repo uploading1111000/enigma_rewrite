@@ -10,7 +10,7 @@
 #pragma once
 class Machine {
 private:
-	std::unique_ptr<MachineSpecification> specification = nullptr;
+	MachineSpecification* specification = nullptr;
 protected:
 	std::array<Rotor, 3> rotors;
 	Reflector reflector;
@@ -27,7 +27,7 @@ public:
 	Rotor* getRotor(int N) { return &rotors[N]; }
 	Reflector* getReflector() { return &reflector; };
 	Plugboard* getPlugboard() { return &plugboard; };
-	virtual MachineSpecification* getSpecification() { return specification.get(); };
+	virtual MachineSpecification* getSpecification() { return specification; };
 	void mutateRotors();
 	virtual int encryptLetter(int);
 	char encryptLetter(char);

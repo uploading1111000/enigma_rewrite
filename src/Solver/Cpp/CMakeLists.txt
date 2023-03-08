@@ -29,7 +29,14 @@ target_link_libraries(main PUBLIC
 		solverMachine
         solverMachineFour
 )
-
+target_link_libraries(binds PUBLIC 
+        machineSpecification
+        machineSpecificationFour
+        machine
+        machineFour
+        solverMachine
+        solverMachineFour
+)
 target_link_libraries(dataBuilder PUBLIC
     Boost::headers
     Boost::serialization
@@ -43,6 +50,10 @@ target_include_directories(binds PUBLIC
         "${PROJECT_SOURCE_DIR}"
         "${PROJECT_BINARY_DIR}"
         "${PROJECT_SOURCE_DIR}/simulation"
+        "${PROJECT_SOURCE_DIR}/utils"
+        "${PROJECT_SOURCE_DIR}/analysis"
+		"${PROJECT_SOURCE_DIR}/solver"
+        "${Boost_INCLUDE_DIR}"
 )
 target_include_directories(main PUBLIC
         "${PROJECT_SOURCE_DIR}"

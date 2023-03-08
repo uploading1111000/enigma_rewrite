@@ -14,6 +14,7 @@ protected:
 public:
 	MachineSpecification(std::string filepath);
 	virtual int getN() { return 3; };
+	std::string getName() { return name; };
 	RotorSpecification& getRotor(int N) { return possibleRotors[N]; };
 	RotorSpecification& getNext();
 	size_t getRotorLength() { return possibleRotors.size(); };

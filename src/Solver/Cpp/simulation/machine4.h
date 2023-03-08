@@ -3,7 +3,7 @@
 #pragma once
 class MachineFour : virtual public Machine {
 private:
-	std::unique_ptr<MachineSpecificationFour> specification;
+	MachineSpecificationFour* specification;
 protected:
 	Rotor rotor4;
 public:
@@ -12,7 +12,7 @@ public:
 	void setRotorFourRing(int ring) { rotor4.setRing(ring); };
 	void setRotorFour(int id);
 	Rotor* getRotorFour() { return &rotor4; };
-	MachineSpecificationFour* getSpecification() { return specification.get(); };
+	MachineSpecificationFour* getSpecification() { return specification; };
 	int encryptLetter(int);
 	using Machine::encryptLetter;
 	using Machine::encryptWord;
