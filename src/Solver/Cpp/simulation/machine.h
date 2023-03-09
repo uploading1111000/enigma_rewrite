@@ -16,14 +16,15 @@ protected:
 	Reflector reflector;
 	Plugboard plugboard;
 public:
-	Machine(MachineSpecification&, std::array<int,3>, int, std::vector<std::array<char, 2>>);
+	Machine(MachineSpecification& spec, std::array<int, 3> rotorIds = {}, int reflector = 1, std::vector<std::array<char, 2>> plugboard = {});
 	Machine() {}; //don't call this
-	void setPositions(const std::array<int, 3>&);
+	void setPositions(std::array<int, 3>);
 	void setPosition(int N, int position);
 	void setRings(std::array<int, 3>);
 	void setRing(int N, int ring);
 	void setRotor(Place, int id);
 	void setRotor(int, int id);
+	void setRotors(std::array<int,3>);
 	Rotor* getRotor(int N) { return &rotors[N]; }
 	Reflector* getReflector() { return &reflector; };
 	Plugboard* getPlugboard() { return &plugboard; };

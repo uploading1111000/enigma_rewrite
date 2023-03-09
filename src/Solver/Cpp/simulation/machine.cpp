@@ -1,6 +1,7 @@
 #include "machine.h"
 #include "machine.h"
 #include "machine.h"
+#include "machine.h"
 
 inline int convert(char in) {
 	return (int) in - 64;
@@ -20,7 +21,7 @@ Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int re
 	plugboard = Plugboard(plugboardPairs);
 }
 
-void Machine::setPositions(const std::array<int, 3> &positions)
+void Machine::setPositions(std::array<int, 3> positions)
 {
 	for (int i = 0; i < 3; i++) {
 		setPosition(i, positions[i]);
@@ -66,6 +67,13 @@ void Machine::setRotor(int place, int id)
 		break;
 	}
 	
+}
+
+void Machine::setRotors(std::array<int,3> ids)
+{
+	for (int i = 0; i < 3; i++) {
+		setRotor(i, ids[i]);
+	}
 }
 
 void Machine::mutateRotors()
