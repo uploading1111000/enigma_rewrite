@@ -18,6 +18,7 @@ void MachineFour::setRotorFour(int id)
 
 int MachineFour::encryptLetter(int start)
 {
+	std::cout << "hello\n";
 	mutateRotors();
 	int plugF = plugboard.Transform(start);
 
