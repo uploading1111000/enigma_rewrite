@@ -14,9 +14,7 @@ inline char convert(int in) {
 Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int reflectorId, std::vector<std::array<char, 2>> plugboardPairs)
 {
 	specification = &spec;
-	for (int i = 0; i < 3; i++) {
-		rotors[i] = Rotor(specification->getRotor(rotorIds[i]));
-	}
+	setRotors(rotorIds);
 	reflector = specification->getReflector(reflectorId);
 	plugboard = Plugboard(plugboardPairs);
 }
