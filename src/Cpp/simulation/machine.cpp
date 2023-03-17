@@ -140,8 +140,10 @@ std::vector<int> Machine::encryptLetterVerbose(int start)
 	returnable.push_back(middleF);
 	int leftF = rotors[left].Transform(middleF);
 	returnable.push_back(leftF);
+	returnable.push_back(leftF);
 	//int fourthF = rotorFour.Transform(leftF)
 	int reflected = reflector.Transform(leftF);
+	returnable.push_back(reflected);
 	returnable.push_back(reflected);
 	//int fourthR = rotorFour.TransformReverse(reflected)
 	int leftR = rotors[left].TransformReverse(reflected);
