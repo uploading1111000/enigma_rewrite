@@ -3,8 +3,8 @@
 *.pyc
 *~
 *.swp
-src/Solver/Cpp/out
-src/Solver/Cpp/build
+src/Cpp/out
+src/Cpp/build
 data/
 ~$ite_up.docx
 /~$tests.xlsx
