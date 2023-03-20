@@ -36,6 +36,8 @@ target_link_libraries(binds PUBLIC
         machineFour
         solverMachine
         solverMachineFour
+        IOC
+        NGram
 )
 target_link_libraries(dataBuilder PUBLIC
     Boost::headers

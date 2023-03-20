@@ -6,21 +6,9 @@
 #include "machine4.h"
 #include "solverMachine.h"
 #include "solverMachine4.h"
+#include "NGram.h"
+#include "indexOfCoincidence.h"
 namespace py  = pybind11;
-
-class PyMachine : public Machine {
-public:
-	using Machine::Machine;
-	int encryptLetter(int start) override { PYBIND11_OVERRIDE(int, Machine, encryptLetter, start); };
-	std::vector<int> encryptLetterVerbose (int start) override { PYBIND11_OVERRIDE(std::vector<int>, Machine, encryptLetterVerbose, start); };
-};
-
-class PyMachineFour : public MachineFour {
-public:
-	using MachineFour::MachineFour;
-	int encryptLetter(int start) override { PYBIND11_OVERRIDE(int, MachineFour, encryptLetter, start); };
-	std::vector<int> encryptLetterVerbose(int start) override { PYBIND11_OVERRIDE(std::vector<int>, MachineFour, encryptLetterVerbose, start); };
-};
 
 PYBIND11_MODULE(binds, m){
 	py::class_<MachineSpecification>(m, "MachineSpecification")
@@ -29,7 +17,7 @@ PYBIND11_MODULE(binds, m){
 		.def("getN", &MachineSpecification::getN);
 	py::class_<MachineSpecificationFour, MachineSpecification>(m, "MachineSpecificationFour")
 		.def(py::init <std::string>());
-	py::class_<Machine, PyMachine> (m, "Machine")
+	py::class_<Machine> (m, "Machine")
 		.def(py::init<MachineSpecification&, std::array<int, 3>, int, std::vector<std::array<char, 2>>>(),py::arg("spec"),
 			py::arg("rotorIds") = std::array<int, 3>{0, 1, 2}, py::arg("reflector") = 1, py::arg("plugboard") = std::vector<std::array<int, 3>>{})
 		.def("encryptWord", static_cast<std::string(Machine::*)(std::string)>(&Machine::encryptWord))
@@ -41,9 +29,28 @@ PYBIND11_MODULE(binds, m){
 		.def("setRing", &Machine::setRing)
 		.def("setRotors", &Machine::setRotors)
 		.def("setRotor", static_cast<void (Machine::*)(int, int)>(&Machine::setRotor));
-	py::class_<MachineFour, Machine, PyMachineFour>(m, "MachineFour")
+	py::class_<MachineFour, Machine>(m, "MachineFour")
 		.def(py::init<MachineSpecificationFour&, std::array<int, 3>, int, int, std::vector<std::array<char, 2>>>(), py::arg("spec"),
 			py::arg("rotorIds") = std::array<int, 3>{0, 1, 2}, py::arg("rotor4Id") = 0, py::arg("reflector") = 1, py::arg("plugboard") = std::vector<std::array<int, 3>>{})
 		.def("encryptWord", static_cast<std::string(MachineFour::*)(std::string)>(&MachineFour::encryptWord));
-
+	py::class_<Analyser>(m, "AbstractAnalyser")
+		.def("getName", &Analyser::getName);
+	py::class_<IndexOfCoincidence, Analyser>(m, "IndexOfCoincidence")
+		.def(py::init<>())
+		.def("score",&IndexOfCoincidence::score);
+	py::class_<BiGram, Analyser>(m, "BiGrams")
+		.def(py::init<std::string>())
+		.def("score", &BiGram::score);
+	py::class_<TriGram, Analyser>(m, "TriGrams")
+		.def(py::init<std::string>())
+		.def("score", &TriGram::score);
+	py::class_<QuadGram, Analyser>(m, "QuadGrams")
+		.def(py::init<std::string>())
+		.def("score", &QuadGram::score);
+	py::class_<SolverMachine, Machine>(m, "SolverMachine")
+		.def(py::init<MachineSpecification&, std::optional<std::array<int, 3>>, std::optional<int>,
+			std::optional<std::vector<std::array<char, 2>>>, std::string, Analyser*>(), py::arg("spec"),
+			py::arg("rotorIds") = std::optional<std::array<int, 3>>{}, py::arg("reflector") = std::optional<int>{},
+			py::arg("plugboard") = std::optional<std::vector<std::array<char, 2>>>{}, py::arg("ciphertext"),py::arg("analyser") = new IndexOfCoincidence())
+		.def("findRotors",&SolverMachine::findBestRotors);
 }
