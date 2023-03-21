@@ -32,19 +32,19 @@ PYBIND11_MODULE(binds, m){
 	py::class_<MachineFour, Machine>(m, "MachineFour")
 		.def(py::init<MachineSpecificationFour&, std::array<int, 3>, int, int, std::vector<std::array<char, 2>>>(), py::arg("spec"),
 			py::arg("rotorIds") = std::array<int, 3>{0, 1, 2}, py::arg("rotor4Id") = 0, py::arg("reflector") = 1, py::arg("plugboard") = std::vector<std::array<int, 3>>{})
-		.def("encryptWord", static_cast<std::string(MachineFour::*)(std::string)>(&MachineFour::encryptWord));
+		.def("encryptWord4", static_cast<std::string(MachineFour::*)(std::string)>(&MachineFour::encryptWord));
 	py::class_<Analyser>(m, "AbstractAnalyser")
 		.def("getName", &Analyser::getName);
 	py::class_<IndexOfCoincidence, Analyser>(m, "IndexOfCoincidence")
 		.def(py::init<>())
 		.def("score",&IndexOfCoincidence::score);
-	py::class_<BiGram, Analyser>(m, "BiGrams")
+	py::class_<BiGram, Analyser>(m, "BiGram")
 		.def(py::init<std::string>())
 		.def("score", &BiGram::score);
-	py::class_<TriGram, Analyser>(m, "TriGrams")
+	py::class_<TriGram, Analyser>(m, "TriGram")
 		.def(py::init<std::string>())
 		.def("score", &TriGram::score);
-	py::class_<QuadGram, Analyser>(m, "QuadGrams")
+	py::class_<QuadGram, Analyser>(m, "QuadGram")
 		.def(py::init<std::string>())
 		.def("score", &QuadGram::score);
 	py::class_<SolverMachine, Machine>(m, "SolverMachine")
