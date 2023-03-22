@@ -196,8 +196,8 @@ std::array<int, 26> Machine::getWiring(int N) {
 		std::array<int,26> normal = rotors[N - 2].getWiring();
 		std::array<int, 26> returnable;
 		for (int i = 1; i < 27; i++) {
-			int indexA = i + rotors[N-2].getPosition() - rotors[N-2].getRingPosition();
-			int indexB = normal[i-1] + rotors[N-2].getPosition() - rotors[N-2].getRingPosition();
+			int indexA = i - rotors[N-2].getPosition() + rotors[N-2].getRingPosition();
+			int indexB = normal[i-1] - rotors[N-2].getPosition() + rotors[N-2].getRingPosition();
 			normalise(indexA);
 			normalise(indexB);
 			returnable[indexA - 1] = indexB;
@@ -231,4 +231,17 @@ void Machine::decrementRing(int N) {
 	int preRing = rotors[N].getRingPosition() - 1;
 	normalise(preRing);
 	rotors[N].setRing(preRing);
+}
+
+std::vector<int> Machine::getTurnpoints(int N) {
+	std::array<int, 2> raw = rotors[N].getTurnpoints();
+	std::vector<int> returnable;
+	for (int val : raw) {
+		if (val != 0) {
+			int real = val - rotors[N].getPosition();
+			normalise(real);
+			returnable.push_back(real);
+		}
+	}
+	return returnable;
 }
