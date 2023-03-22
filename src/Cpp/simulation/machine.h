@@ -15,6 +15,7 @@ protected:
 	std::array<Rotor, 3> rotors;
 	Reflector reflector;
 	Plugboard plugboard;
+	virtual std::array<int, 26> getFourth() { return sequential; };
 public:
 	Machine(MachineSpecification& spec, std::array<int, 3> rotorIds = {}, int reflector = 1, std::vector<std::array<char, 2>> plugboard = {});
 	Machine() {}; //don't call this
@@ -25,9 +26,20 @@ public:
 	void setRotor(Place, int id);
 	void setRotor(int, int id);
 	void setRotors(std::array<int,3>);
+	void incrementRotor(int N);
+	void decrementRotor(int N);
+	void incrementPosition(int N);
+	void decrementPosition(int N);
+	void incrementRing(int N);
+	void decrementRing(int N);
+	int getPosition(int N) { return rotors[N].getPosition(); };
+	int getRing(int N) { return rotors[N].getRingPosition(); };
+	std::vector<int> getTurnpoints(int N) { return { rotors[N].getTurnpoints()[0],rotors[N].getTurnpoints()[1] }; };
+	std::string getRotorID(int N) { return rotors[N].getRotorID(); };
 	Rotor* getRotor(int N) { return &rotors[N]; }
 	Reflector* getReflector() { return &reflector; };
 	Plugboard* getPlugboard() { return &plugboard; };
+	std::array<int, 26> getWiring(int N);
 	virtual MachineSpecification* getSpecification() { return specification; };
 	void mutateRotors();
 	virtual int encryptLetter(int);

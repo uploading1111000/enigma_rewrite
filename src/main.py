@@ -12,6 +12,7 @@ NGrams =[
    binds.TriGram("src/Cpp/ngramData/gramstri.bin"),
    binds.QuadGram("src/Cpp/ngramData/gramsquad.bin")
 ]
+machine = binds.Machine(specs[0])
 alphabet = """A
 B
 C
@@ -38,56 +39,97 @@ W
 X
 Y
 Z"""
-def rotor(frame,rotate=False,change=False,rings=False,wires=None,col=0):
-    container = tk.Frame(frame,bg="grey60")
-    container.grid(column=col,row=0)
-    ringBox = tk.Label(container,text="Rings: 1")
-    ringBox.grid(column=1,row=0,padx=5,pady=5)
-    changeBox = tk.Label(container,text="I")
-    changeBox.grid(column=1,row=1,padx=5,pady=5)
-    rotateUp = tk.Button(container,text="/\\")
-    rotateUp.grid(column=1,row=2,padx=5,pady=5)
-    leftLetters = tk.Label(container,text=alphabet)
-    rightLetters = tk.Label(container,text=alphabet)
-    leftLetters.grid(column=0,row=3,pady=5,sticky="E")
-    rightLetters.grid(column=2,row=3,pady=5,sticky="W")
-    wiries = tk.Frame(container,width=150,height=450,bg="grey40")
-    wiries.grid(column=1,row=3,pady=5)
-    rotateDown = tk.Button(container,text="\\/")
-    rotateDown.grid(column=1,row=4,padx=5,pady=5)
-    if not rotate:
-        rotateDown.grid_forget()
-        rotateUp.grid_forget()
-    if not change:
-        changeBox.grid_forget()
-    else:
-        changeLeft = tk.Button(container,text="<")
-        changeLeft.grid(column=0,row=1,pady=5)
-        changeRight = tk.Button(container,text=">")
-        changeRight.grid(column=2,row=1,pady=5)
-    if not rings:
-        ringBox.grid_forget()
-    else:
-        ringLeft = tk.Button(container,text="<")
-        ringLeft.grid(column=0,row=0,pady=5)
-        ringRight = tk.Button(container,text=">")
-        ringRight.grid(column=2,row=0,pady=5)
+class tkRotor():
+    def __init__(self, container,index):
+        col = 3 * index
+        leftLetters = tk.Label(container,text=alphabet)
+        rightLetters = tk.Label(container,text=alphabet)
+        leftLetters.grid(column=col+0,row=4,pady=5,sticky="E")
+        rightLetters.grid(column=col+2,row=4,pady=5,sticky="W")
+        self.wiries = tk.Canvas(container,width=150,height=450,bg="grey40")
+        self.wiries.grid(column=col+1,row=4,pady=5)
+        if index == 0 or (index >= 2 and index <= 4):
+            changeLeft = tk.Button(container,text="<", command=self.changeButtonDown)
+            changeLeft.grid(column=col+0,row=1,pady=5)
+            changeRight = tk.Button(container,text=">", command=self.changeButtonUp)
+            changeRight.grid(column=col+2,row=1,pady=5)
+            self.changeBox = tk.Label(container,text="I")
+            self.changeBox.grid(column=col+1,row=1,padx=5,pady=5)
+        if index >= 2 and index <= 4:
+            ringLeft = tk.Button(container,text="<",command=self.ringLeft)
+            ringLeft.grid(column=col+0,row=0,pady=5)
+            ringRight = tk.Button(container,text=">",command=self.ringRight)
+            ringRight.grid(column=col+2,row=0,pady=5)
+            self.positionIndicator =tk.Label(container,text="1")
+            self.positionIndicator.grid(column=col+1,row=2,padx=5,pady=5)
+            rotateDown = tk.Button(container,text="\\/",command=self.positionButtonDown)
+            rotateDown.grid(column=col+1,row=5,padx=5,pady=5)
+            rotateUp = tk.Button(container,text="/\\",command=self.positionButtonUp)
+            rotateUp.grid(column=col+1,row=3,padx=5,pady=5)
+            self.ringBox = tk.Label(container,text="Rings: 1")
+            self.ringBox.grid(column=col+1,row=0,padx=5,pady=5)
+        self.index=index
+        self.update()
+    def updateWiries(self, wirings, turnovers):
+        self.wiries.delete("all")
+        def convert(yI):
+            return yI * 15 + 40
+        for i,j in enumerate(wirings):
+            self.wiries.create_line(150,convert(i),0,convert(j-1),fill="black",width=2)
+
+    def update(self):
+        global machine
+        wirings = machine.getWiring(self.index)
+        if self.index <= 4 and self.index >= 2:
+            self.changeBox.configure(text=machine.getRotorID(self.index-2))
+            self.positionIndicator.configure(text=str(machine.getPosition(self.index-2)))
+            self.ringBox.configure(text=("Ring: " + str(machine.getRing(self.index-2))))
+        self.updateWiries(wirings,machine.getTurnpoints(self.index-2))
+
+    def changeButtonUp(self):
+        if self.index >=2 and self.index <= 4:
+            prePos = machine.getPosition(self.index-2)
+            machine.incrementRotor(self.index-2)
+            machine.setPosition(self.index-2,prePos)
+        self.update()
+
+    def changeButtonDown(self):
+        if self.index >=2 and self.index <= 4:
+            prePos = machine.getPosition(self.index-2)
+            machine.decrementRotor(self.index-2)
+            machine.setPosition(self.index-2,prePos)
+        self.update()
+
+    def positionButtonUp(self):
+        machine.decrementPosition(self.index-2)
+        self.update()
+
+    def positionButtonDown(self):
+        machine.incrementPosition(self.index-2)
+        self.update()
+
+    def ringLeft(self):
+        machine.decrementRing(self.index-2)
+        self.update()
+
+    def ringRight(self):
+        machine.incrementRing(self.index-2)
+        self.update()
+
+class visualiser:
+    def __init__(self,simtab):
+        self.box = tk.Frame(simtab,bg = "grey60")
+        self.box.grid(column = 0, row=0, padx=10, pady=10)
+        self.rotors = [tkRotor(self.box,i) for i in range(6)]
 
 
 def simulationTab(simtab):
-    visualiser = tk.Frame(simtab,bg = "grey60")
-    visualiser.grid(column = 0, row=0, padx=10, pady=10)
+    global visualiser
+    visualiser(simtab)
     details = tk.Frame(simtab, width=300, height=650, bg= "grey60")
     details.grid(column=1,row=0, padx=10, pady=10)
     stringIO = tk.Frame(simtab, width = 1100, height = 75, bg = "grey60")
     stringIO.grid(column=0,row=1, padx=10, pady=10)
-    
-    rotor(visualiser,change=True,col=0)
-    rotor(visualiser,change=True,rotate=True,rings=True,col=1)
-    rotor(visualiser,change=True,rotate=True,rings=True,col=2)
-    rotor(visualiser,change=True,rotate=True,rings=True,col=3)
-    rotor(visualiser,change=True,rotate=True,rings=True,col=4)
-    rotor(visualiser,col=5)
 root = tk.Tk()
 root.title("Enigma Education Tool")
 root.config(background="green")

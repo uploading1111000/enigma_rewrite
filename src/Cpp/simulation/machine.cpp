@@ -19,6 +19,23 @@ Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int re
 	plugboard = Plugboard(plugboardPairs);
 }
 
+void Machine::incrementRotor(int N) {
+	int curr = rotors[N].getID();
+	curr++;
+	if (curr >= this->getSpecification()->getRotorLength()) {
+		curr = 0;
+	}
+	setRotor(N, curr);
+}
+void Machine::decrementRotor(int N) {
+	int curr = rotors[N].getID();
+	curr--;
+	if (curr < 0) {
+		curr = this->getSpecification()->getRotorLength()-1;
+	}
+	setRotor(N, curr);
+}
+
 void Machine::setPositions(std::array<int, 3> positions)
 {
 	for (int i = 0; i < 3; i++) {
@@ -166,4 +183,53 @@ std::string Machine::encryptLetterVerbose(char letter)
 		returnable.push_back(convert(num));
 	}
 	return returnable;
+}
+
+std::array<int, 26> Machine::getWiring(int N) {
+	if (N == 0) {
+		return sequential;
+	}
+	else if (N == 1) {
+		return this->getFourth();
+	}
+	else if (N >= 2 && N <= 4) {
+		std::array<int,26> normal = rotors[N - 2].getWiring();
+		std::array<int, 26> returnable;
+		for (int i = 1; i < 27; i++) {
+			int indexA = i + rotors[N-2].getPosition() - rotors[N-2].getRingPosition();
+			int indexB = normal[i-1] + rotors[N-2].getPosition() - rotors[N-2].getRingPosition();
+			normalise(indexA);
+			normalise(indexB);
+			std::cout << indexA << "\n";
+			returnable[indexA - 1] = indexB;
+		}
+		return returnable;
+	}
+	else {
+		return plugboard.getWiring();
+	}
+}
+
+void Machine::incrementPosition(int N) {
+	int prePos = rotors[N].getPosition() + 1;
+	normalise(prePos);
+	rotors[N].setPosition(prePos);
+}
+
+void Machine::decrementPosition(int N) {
+	int prePos = rotors[N].getPosition() - 1;
+	normalise(prePos);
+	rotors[N].setPosition(prePos);
+}
+
+void Machine::incrementRing(int N) {
+	int preRing = rotors[N].getRingPosition() + 1;
+	normalise(preRing);
+	rotors[N].setRing(preRing);
+}
+
+void Machine::decrementRing(int N) {
+	int preRing = rotors[N].getRingPosition() - 1;
+	normalise(preRing);
+	rotors[N].setRing(preRing);
 }
