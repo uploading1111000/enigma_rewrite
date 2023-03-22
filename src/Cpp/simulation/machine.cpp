@@ -200,7 +200,6 @@ std::array<int, 26> Machine::getWiring(int N) {
 			int indexB = normal[i-1] + rotors[N-2].getPosition() - rotors[N-2].getRingPosition();
 			normalise(indexA);
 			normalise(indexB);
-			std::cout << indexA << "\n";
 			returnable[indexA - 1] = indexB;
 		}
 		return returnable;

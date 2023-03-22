@@ -70,21 +70,30 @@ class tkRotor():
             self.ringBox.grid(column=col+1,row=0,padx=5,pady=5)
         self.index=index
         self.update()
+
+
     def updateWiries(self, wirings, turnovers):
-        self.wiries.delete("all")
         def convert(yI):
             return yI * 15 + 40
+        self.wiries.delete("all")
         for i,j in enumerate(wirings):
             self.wiries.create_line(150,convert(i),0,convert(j-1),fill="black",width=2)
+        for turnover in turnovers:
+            if 1 <= turnover and 26 >= turnover:
+                self.wiries.create_line(130,convert(turnover-1),20,convert(turnover-1),fill="red",width=5)
+        
 
     def update(self):
         global machine
         wirings = machine.getWiring(self.index)
+        turnovers = [0,0]
         if self.index <= 4 and self.index >= 2:
             self.changeBox.configure(text=machine.getRotorID(self.index-2))
             self.positionIndicator.configure(text=str(machine.getPosition(self.index-2)))
             self.ringBox.configure(text=("Ring: " + str(machine.getRing(self.index-2))))
-        self.updateWiries(wirings,machine.getTurnpoints(self.index-2))
+            turnovers = machine.getTurnpoints(self.index-2)
+       
+        self.updateWiries(wirings,turnovers)
 
     def changeButtonUp(self):
         if self.index >=2 and self.index <= 4:

@@ -34,7 +34,7 @@ public:
 	void decrementRing(int N);
 	int getPosition(int N) { return rotors[N].getPosition(); };
 	int getRing(int N) { return rotors[N].getRingPosition(); };
-	std::vector<int> getTurnpoints(int N) { return { rotors[N].getTurnpoints()[0],rotors[N].getTurnpoints()[1] }; };
+	std::vector<int> getTurnpoints(int N);
 	std::string getRotorID(int N) { return rotors[N].getRotorID(); };
 	Rotor* getRotor(int N) { return &rotors[N]; }
 	Reflector* getReflector() { return &reflector; };
