@@ -1,6 +1,7 @@
 import importlib
 import tkinter as tk
 from tkinter import ttk
+import re
 binds = importlib.import_module("Cpp.out.build.x64-Release.binds")
 specs = [
     binds.MachineSpecification("src/Cpp/simulation/machineJsons/enigmaI.json"),
@@ -132,6 +133,13 @@ class tkRotor():
         machine.incrementRing(self.index-2)
         self.parent.refresh()
 
+class detailsBarSim:
+    def __init__(self,simtab):
+        pass
+
+    def errorChange(self,text):
+        pass
+
 class visualiser:
     def __init__(self,simtab):
         self.box = tk.Frame(simtab,bg = "grey60")
@@ -141,24 +149,62 @@ class visualiser:
         for rotor in self.rotors:
             rotor.update();
     def keyPress(self,event):
-        if not event.char.islower():
+        global stringbox
+        if not event.char.islower() or stringbox.isFocused():
             return
         path = machine.encryptLetterVerbose(event.char.upper())
         self.refresh()
-        for i in range(6):
+        for i in range(5):
             self.rotors[5-i].addPath(path[i+1],path[i],"blue")
-        for i in range(6):
-            self.rotors[i].addPath(path[i+5],path[i+6],"yellow")
+        self.rotors[0].addPath(path[5],path[5],"blue")
+        self.rotors[0].addPath(path[6],path[6],"yellow")
+        for i in range(5):
+            self.rotors[i+1].addPath(path[i+6],path[i+7],"yellow")
 
+
+nonalphabetRegex = re.compile('[^A-Z]')
+def clean(text):
+    upper = text.upper()
+    global nonalphabetRegex
+    return nonalphabetRegex.sub('', upper)
+
+
+class stringBox:
+    def __init__(self,simtab):
+        self.container = tk.Frame(simtab,bg="grey60",height=75)
+        self.container.grid(column=0,row=1, padx=10, pady=10)
+        self.inText = tk.StringVar()
+        self.input = tk.Entry(self.container,width=180,textvariable=self.inText,validate="focusout",validatecommand=self.update)
+        self.input.grid(column=0,row=0,padx=10,pady=10)
+        self.outText = tk.StringVar()
+        self.output = tk.Entry(self.container,width=180,state="readonly", textvariable=self.outText)
+        self.output.grid(column=0,row=1,padx=10,pady=10)
+
+    def update(self,event):
+        toValidate = self.inText.get()
+        if len(toValidate) == 0:
+            self.outText.set("")
+            return None
+        cleaned = clean(toValidate)
+        if len(cleaned)==0:
+            global detailsBarSim
+            detailsBarSim.errorChange("Encrypt string has no readable text")
+            self.outText.set("")
+            return None
+        global machine
+        prePos = machine.getPositions()
+        word = machine.encryptWord(cleaned)
+        self.outText.set(word)
+        machine.setPositions(prePos)
+
+    def isFocused(self):
+        return self.input.focus_get()
 
 
 
 def simulationTab(simtab):
-    global vis
     details = tk.Frame(simtab, width=300, height=650, bg= "grey60")
     details.grid(column=1,row=0, padx=10, pady=10)
-    stringIO = tk.Frame(simtab, width = 1100, height = 75, bg = "grey60")
-    stringIO.grid(column=0,row=1, padx=10, pady=10)
 root = tk.Tk()
 root.title("Enigma Education Tool")
 root.config(background="green")
@@ -167,9 +213,11 @@ notebook.pack(expand=True)
 simtab = tk.Frame(notebook, bg="green")
 solvetab = tk.Frame(notebook)
 simtab.pack(fill='both', expand=True)
+stringbox = stringBox(simtab)
 vis = visualiser(simtab)
 root.bind("<KeyPress>",vis.keyPress)
 simulationTab(simtab)
+root.bind("<Return>",stringbox.update)
 solvetab.pack(fill='both', expand=True)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')

@@ -33,6 +33,7 @@ public:
 	void incrementRing(int N);
 	void decrementRing(int N);
 	int getPosition(int N) { return rotors[N].getPosition(); };
+	std::array<int, 3> getPositions() { return { rotors[0].getPosition(),rotors[1].getPosition(),rotors[2].getPosition() }; };
 	int getRing(int N) { return rotors[N].getRingPosition(); };
 	std::vector<int> getTurnpoints(int N);
 	std::string getRotorID(int N) { return rotors[N].getRotorID(); };

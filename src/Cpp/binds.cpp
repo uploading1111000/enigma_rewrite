@@ -38,6 +38,7 @@ PYBIND11_MODULE(binds, m){
 		.def("decrementRing", &Machine::decrementRing)
 		.def("getRotorID", &Machine::getRotorID)
 		.def("getPosition", &Machine::getPosition)
+		.def("getPositions",&Machine::getPositions)
 		.def("getRing",&Machine::getRing)
 		.def("getTurnpoints",&Machine::getTurnpoints);
 	py::class_<MachineFour, Machine>(m, "MachineFour")
