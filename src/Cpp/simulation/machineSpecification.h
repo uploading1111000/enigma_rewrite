@@ -21,4 +21,10 @@ public:
 	Reflector& getReflector(int N) { return possibleReflectors[N]; };
 	Reflector& getNextReflector();
 	size_t getReflectorLength() { return possibleReflectors.size(); };
+	std::vector<std::string> getRotorIDs() {
+		std::vector<std::string> ids;
+		for (auto r : possibleRotors) {
+			ids.push_back(r.getRotorID());
+		}
+	}
 };

@@ -14,7 +14,8 @@ PYBIND11_MODULE(binds, m){
 	py::class_<MachineSpecification>(m, "MachineSpecification")
 		.def(py::init<std::string>())
 		.def("getName", &MachineSpecification::getName)
-		.def("getN", &MachineSpecification::getN);
+		.def("getN", &MachineSpecification::getN)
+		.def("getRotorIDs",&MachineSpecification::getRotorIDs);
 	py::class_<MachineSpecificationFour, MachineSpecification>(m, "MachineSpecificationFour")
 		.def(py::init <std::string>());
 	py::class_<Machine>(m, "Machine")

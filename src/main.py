@@ -1,3 +1,4 @@
+from cProfile import label
 import importlib
 import tkinter as tk
 from tkinter import ttk
@@ -23,6 +24,7 @@ NGrams =[
    binds.TriGram("src/Cpp/ngramData/gramstri.bin"),
    binds.QuadGram("src/Cpp/ngramData/gramsquad.bin")
 ]
+specIndex = 0
 machine = binds.Machine(specs[0])
 alphabet = """Z
 Y
@@ -143,26 +145,98 @@ class tkRotor():
         machine.incrementRing(self.index-2)
         self.parent.refresh()
 
+#shamelessly stolen
+class IntEntry(tk.Entry):
+    def __init__(self, master=None, **kwargs):
+        self.var = tk.StringVar()
+        tk.Entry.__init__(self, master, textvariable=self.var, **kwargs)
+        self.old_value = ''
+        self.var.trace('w', self.check)
+        self.get, self.set = self.var.get, self.var.set
+
+    def check(self, *args):
+        if self.get().isdigit(): 
+            self.old_value = self.get()
+        else:
+            self.set(self.old_value)
+
 class detailsBarSim:
     def __init__(self,simtab):
         self.container = tk.Frame(simtab,bg="grey60")
         self.container.grid(column=1,row=0, padx=10, pady=10)
+
         self.value = tk.StringVar()
         global options
         self.value.set(options[0])
-        self.menuLabel = tk.Label(self.container,text="Machine type to use:", bg="grey60")
-        self.menuLabel.grid(row=0,column=0,pady=5)
+        menuLabel = tk.Label(self.container,text="Machine type to use:", bg="grey60")
+        menuLabel.grid(row=0,column=0)
         self.menu = tk.OptionMenu(self.container,self.value,*options,command=self.machineChange)
-        self.menu.grid(row=1,column=0,pady=5)
+        self.menu.grid(row=1,column=0,pady=10)
+
+        self.rotorOptions = tk.Frame(self.container)
+        self.rotorOptions.grid(row=0,column=1,pady=10)
+        self.makeRotorOptions()
+
+        self.ringOptions = tk.Frame(self.container)
+        self.ringOptions.grid(row=0,column=2,pady=10)
+        self.makeRingOptions()
+
+        self.positionOptions = tk.Frame(self.container)
+        self.positionOptions.grid(row=0,column=3,pady=10)
+        self.makePositionOptions()
+
+        self.plugboardRow = tk.Frame(self.container)
+        self.plugboardRow.grid(row=0,column=4,pady=10)
+        self.plugString = tk.StringVar()
+        plugLabel = tk.Label(self.plugboardRow,text="Plugboard:")
+        plugLabel.grid(row=0,column=0,padx=5)
+        plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString)
+        plugEntry.grid(row=1,column=0,padx=5)
+
+        self.buttonRow = tk.Frame(self.container)
+        self.buttonRow.grid(row=0,column=5,pady=10)
+
+    def makeRotorOptions(self):
+        global specs
+        global specIndex
+        options = specs[specIndex].getRotorIDs()
+        label = tk.Label(self.rotorOptions,text="Rotors:",bg="grey60")
+        label.grid(row=0,column=0,padx=10)
+        self.rotorStrings = []
+        for i in range(3):
+            string = tk.StringVar()
+            string.set(options[0])
+            dropDown = tk.OptionMenu(self.container,string,*options)
+            dropDown.grid(row=i+2,column=0,padx=5)
+            self.rotorStrings.append(string)
+
+    def makeRingOptions(self):
+        self.rings = []
+        label = tk.Label(self.ringOptions,text="Rings:",bg="grey60")
+        label.grid(row=0,column=0,padx=10)
+        for i in range(3):
+            self.rings[i] = IntEntry(self.ringOptions)
+            self.rings[i].grid(row=0,column=i+2,padx=5)
+
+    def makePositionOptions(self):
+        self.positions = []
+        label = tk.Label(self.positionOptions,text="Positions:",bg="grey60")
+        label.grid(row=0,column=0,padx=10)
+        for i in range(3):
+            self.positions[i] = IntEntry(self.positionOptions)
+            self.positions[i].grid(row=0,column=i+2,padx=5)
 
     def machineChange(self,event):
         global indexing
         global specs
         global machine
         global vis
+        global specIndex
         index = indexing[self.value.get()]
+        specIndex = index
         machine = binds.Machine(specs[index])
         vis.refresh()
+        self.makeRotorOptions()
 
     def errorChange(self,text):
         pass
