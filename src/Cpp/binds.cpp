@@ -44,7 +44,8 @@ PYBIND11_MODULE(binds, m){
 	py::class_<MachineFour, Machine>(m, "MachineFour")
 		.def(py::init<MachineSpecificationFour&, std::array<int, 3>, int, int, std::vector<std::array<char, 2>>>(), py::arg("spec"),
 			py::arg("rotorIds") = std::array<int, 3>{0, 1, 2}, py::arg("rotor4Id") = 0, py::arg("reflector") = 1, py::arg("plugboard") = std::vector<std::array<int, 3>>{})
-		.def("encryptWord4", static_cast<std::string(MachineFour::*)(std::string)>(&MachineFour::encryptWord));
+		.def("encryptWord", static_cast<std::string(MachineFour::*)(std::string)>(&MachineFour::encryptWord))
+		.def("encryptLetterVerbose", static_cast<std::string(MachineFour::*)(char)>(&MachineFour::encryptLetterVerbose));
 	py::class_<Analyser>(m, "AbstractAnalyser")
 		.def("getName", &Analyser::getName);
 	py::class_<IndexOfCoincidence, Analyser>(m, "IndexOfCoincidence")

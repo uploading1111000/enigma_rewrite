@@ -14,8 +14,8 @@ public:
 	Rotor* getRotorFour() { return &rotor4; };
 	MachineSpecificationFour* getSpecification() { return specification; };
 	int encryptLetter(int);
-	using Machine::encryptLetter;
-	using Machine::encryptWord;
 	std::vector<int> encryptLetterVerbose(int);
-	using Machine::encryptLetterVerbose;
+	std::string encryptLetterVerbose(char);
+	std::string encryptWord(std::string);
+	char encryptLetter(char);
 };

@@ -1,5 +1,11 @@
 #include "machine4.h"
+inline int convert(char in) {
+	return (int)in - 64;
+}
 
+inline char convert(int in) {
+	return (char)in + 64;
+}
 MachineFour::MachineFour(MachineSpecificationFour& spec, std::array<int, 3> rotorIds,int rotor4Id, int reflectorId, std::vector<std::array<char, 2>> plugboardPairs)
 {
 	specification = &spec;
@@ -45,6 +51,7 @@ int MachineFour::encryptLetter(int start)
 
 std::vector<int> MachineFour::encryptLetterVerbose(int start)
 {
+	std::cout << start << "\n";
 	std::vector<int> returnable;
 	returnable.push_back(start);
 
@@ -82,5 +89,32 @@ std::vector<int> MachineFour::encryptLetterVerbose(int start)
 
 	int plugR = plugboard.TransformReverse(rightR);
 	returnable.push_back(plugR);
+	return returnable;
+}
+std::string MachineFour::encryptLetterVerbose(char letter)
+{
+	std::cout << letter << "\n";
+	int start = convert(letter);
+	std::vector<int> result = this->encryptLetterVerbose(start);
+	std::string returnable;
+	for (int num : result) {
+		returnable.push_back(convert(num));
+	}
+	return returnable;
+}
+char MachineFour::encryptLetter(char letter)
+{
+	int start = convert(letter);
+	int out = start;
+	if (start > 0 and start < 27) out = this->encryptLetter(start);
+	else if (start > 32 and start < 59) out = this->encryptLetter(start - 32);
+	return convert(out);
+}
+std::string MachineFour::encryptWord(std::string word)
+{
+	std::string returnable;
+	for (char letter : word) {
+		returnable.push_back(encryptLetter(letter));
+	}
 	return returnable;
 }

@@ -8,6 +8,16 @@ specs = [
     binds.MachineSpecification("src/Cpp/simulation/machineJsons/enigmaM3.json"),
     binds.MachineSpecificationFour("src/Cpp/simulation/machineJsons/enigmaM4.json")
 ]
+options = [
+    specs[0].getName(),
+    specs[1].getName(),
+    specs[2].getName()
+]
+indexing = {
+    specs[0].getName(): 0,
+    specs[1].getName(): 1,
+    specs[2].getName(): 2
+}
 NGrams =[
    binds.BiGram("src/Cpp/ngramData/gramsbi.bin"),
    binds.TriGram("src/Cpp/ngramData/gramstri.bin"),
@@ -135,7 +145,24 @@ class tkRotor():
 
 class detailsBarSim:
     def __init__(self,simtab):
-        pass
+        self.container = tk.Frame(simtab,bg="grey60")
+        self.container.grid(column=1,row=0, padx=10, pady=10)
+        self.value = tk.StringVar()
+        global options
+        self.value.set(options[0])
+        self.menuLabel = tk.Label(self.container,text="Machine type to use:", bg="grey60")
+        self.menuLabel.grid(row=0,column=0,pady=5)
+        self.menu = tk.OptionMenu(self.container,self.value,*options,command=self.machineChange)
+        self.menu.grid(row=1,column=0,pady=5)
+
+    def machineChange(self,event):
+        global indexing
+        global specs
+        global machine
+        global vis
+        index = indexing[self.value.get()]
+        machine = binds.Machine(specs[index])
+        vis.refresh()
 
     def errorChange(self,text):
         pass
@@ -149,8 +176,10 @@ class visualiser:
         for rotor in self.rotors:
             rotor.update();
     def keyPress(self,event):
-        global stringbox
-        if not event.char.islower() or stringbox.isFocused():
+        if not event.char.islower():
+            return
+        focus = self.box.focus_get()
+        if isinstance(focus,tk.Entry):
             return
         path = machine.encryptLetterVerbose(event.char.upper())
         self.refresh()
@@ -174,13 +203,14 @@ class stringBox:
         self.container = tk.Frame(simtab,bg="grey60",height=75)
         self.container.grid(column=0,row=1, padx=10, pady=10)
         self.inText = tk.StringVar()
-        self.input = tk.Entry(self.container,width=180,textvariable=self.inText,validate="focusout",validatecommand=self.update)
+        self.inText.trace_add("write",self.update)
+        self.input = tk.Entry(self.container,width=180,textvariable=self.inText)
         self.input.grid(column=0,row=0,padx=10,pady=10)
         self.outText = tk.StringVar()
         self.output = tk.Entry(self.container,width=180,state="readonly", textvariable=self.outText)
         self.output.grid(column=0,row=1,padx=10,pady=10)
 
-    def update(self,event):
+    def update(self,var,index,mode):
         toValidate = self.inText.get()
         if len(toValidate) == 0:
             self.outText.set("")
@@ -197,14 +227,6 @@ class stringBox:
         self.outText.set(word)
         machine.setPositions(prePos)
 
-    def isFocused(self):
-        return self.input.focus_get()
-
-
-
-def simulationTab(simtab):
-    details = tk.Frame(simtab, width=300, height=650, bg= "grey60")
-    details.grid(column=1,row=0, padx=10, pady=10)
 root = tk.Tk()
 root.title("Enigma Education Tool")
 root.config(background="green")
@@ -213,11 +235,14 @@ notebook.pack(expand=True)
 simtab = tk.Frame(notebook, bg="green")
 solvetab = tk.Frame(notebook)
 simtab.pack(fill='both', expand=True)
+detailsbarsim = detailsBarSim(simtab)
 stringbox = stringBox(simtab)
 vis = visualiser(simtab)
 root.bind("<KeyPress>",vis.keyPress)
-simulationTab(simtab)
-root.bind("<Return>",stringbox.update)
+def clearFocus(event):
+    global root
+    root.focus_set()
+root.bind("<Return>",clearFocus)
 solvetab.pack(fill='both', expand=True)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')
