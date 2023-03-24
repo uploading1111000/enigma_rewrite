@@ -26,5 +26,6 @@ public:
 		for (auto r : possibleRotors) {
 			ids.push_back(r.getRotorID());
 		}
+		return ids;
 	}
 };

@@ -172,19 +172,19 @@ class detailsBarSim:
         menuLabel.grid(row=0,column=0)
         self.menu = tk.OptionMenu(self.container,self.value,*options,command=self.machineChange)
         self.menu.grid(row=1,column=0,pady=10)
-
+        print("menu")
         self.rotorOptions = tk.Frame(self.container)
         self.rotorOptions.grid(row=0,column=1,pady=10)
         self.makeRotorOptions()
-
+        print("rotors")
         self.ringOptions = tk.Frame(self.container)
         self.ringOptions.grid(row=0,column=2,pady=10)
         self.makeRingOptions()
-
+        print("rings")
         self.positionOptions = tk.Frame(self.container)
         self.positionOptions.grid(row=0,column=3,pady=10)
         self.makePositionOptions()
-
+        print("positions")
         self.plugboardRow = tk.Frame(self.container)
         self.plugboardRow.grid(row=0,column=4,pady=10)
         self.plugString = tk.StringVar()
@@ -192,14 +192,17 @@ class detailsBarSim:
         plugLabel.grid(row=0,column=0,padx=5)
         plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString)
         plugEntry.grid(row=1,column=0,padx=5)
+        print("plugboard")
 
         self.buttonRow = tk.Frame(self.container)
         self.buttonRow.grid(row=0,column=5,pady=10)
 
     def makeRotorOptions(self):
+        print("in rotor")
         global specs
         global specIndex
         options = specs[specIndex].getRotorIDs()
+        print(options)
         label = tk.Label(self.rotorOptions,text="Rotors:",bg="grey60")
         label.grid(row=0,column=0,padx=10)
         self.rotorStrings = []
