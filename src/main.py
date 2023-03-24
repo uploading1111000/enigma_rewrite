@@ -172,19 +172,19 @@ class detailsBarSim:
         menuLabel.grid(row=0,column=0)
         self.menu = tk.OptionMenu(self.container,self.value,*options,command=self.machineChange)
         self.menu.grid(row=1,column=0,pady=10)
-        print("menu")
+
         self.rotorOptions = tk.Frame(self.container)
         self.rotorOptions.grid(row=0,column=1,pady=10)
         self.makeRotorOptions()
-        print("rotors")
+
         self.ringOptions = tk.Frame(self.container)
         self.ringOptions.grid(row=0,column=2,pady=10)
         self.makeRingOptions()
-        print("rings")
+
         self.positionOptions = tk.Frame(self.container)
         self.positionOptions.grid(row=0,column=3,pady=10)
         self.makePositionOptions()
-        print("positions")
+
         self.plugboardRow = tk.Frame(self.container)
         self.plugboardRow.grid(row=0,column=4,pady=10)
         self.plugString = tk.StringVar()
@@ -218,7 +218,7 @@ class detailsBarSim:
         label = tk.Label(self.ringOptions,text="Rings:",bg="grey60")
         label.grid(row=0,column=0,padx=10)
         for i in range(3):
-            self.rings[i] = IntEntry(self.ringOptions)
+            self.rings.append(IntEntry(self.ringOptions))
             self.rings[i].grid(row=0,column=i+2,padx=5)
 
     def makePositionOptions(self):
@@ -226,7 +226,7 @@ class detailsBarSim:
         label = tk.Label(self.positionOptions,text="Positions:",bg="grey60")
         label.grid(row=0,column=0,padx=10)
         for i in range(3):
-            self.positions[i] = IntEntry(self.positionOptions)
+            self.positions.append(IntEntry(self.positionOptions))
             self.positions[i].grid(row=0,column=i+2,padx=5)
 
     def machineChange(self,event):
