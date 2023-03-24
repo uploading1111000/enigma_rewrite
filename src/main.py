@@ -19,6 +19,16 @@ indexing = {
     specs[1].getName(): 1,
     specs[2].getName(): 2
 }
+idIndexing = {
+    "I" : 0,
+    "II" : 1,
+    "III" : 2,
+    "IV" : 3,
+    "V" : 4,
+    "VI" : 5,
+    "VII" : 6,
+    "VIII" : 7
+}
 NGrams =[
    binds.BiGram("src/Cpp/ngramData/gramsbi.bin"),
    binds.TriGram("src/Cpp/ngramData/gramstri.bin"),
@@ -153,12 +163,19 @@ class IntEntry(tk.Entry):
         self.old_value = ''
         self.var.trace('w', self.check)
         self.get, self.set = self.var.get, self.var.set
+        self.set(1)
 
     def check(self, *args):
-        if self.get().isdigit(): 
-            self.old_value = self.get()
+        new = self.get()
+        if new.isdigit:
+            if int(new) >= 1 and int(new) <= 26:
+                self.oldvalue = new
+            else:
+                self.set(self.oldvalue)
+        elif len(new) == 0:
+            self.oldvalue = new
         else:
-            self.set(self.old_value)
+            self.set(self.oldvalue)
 
 class detailsBarSim:
     def __init__(self,simtab):
@@ -173,29 +190,30 @@ class detailsBarSim:
         self.menu = tk.OptionMenu(self.container,self.value,*options,command=self.machineChange)
         self.menu.grid(row=1,column=0,pady=10)
 
-        self.rotorOptions = tk.Frame(self.container)
-        self.rotorOptions.grid(row=0,column=1,pady=10)
+        self.rotorOptions = tk.Frame(self.container, bg="grey60")
+        self.rotorOptions.grid(row=2,column=0,pady=10)
         self.makeRotorOptions()
 
-        self.ringOptions = tk.Frame(self.container)
-        self.ringOptions.grid(row=0,column=2,pady=10)
+        self.ringOptions = tk.Frame(self.container, bg="grey60")
+        self.ringOptions.grid(row=3,column=0,pady=10)
         self.makeRingOptions()
 
-        self.positionOptions = tk.Frame(self.container)
-        self.positionOptions.grid(row=0,column=3,pady=10)
+        self.positionOptions = tk.Frame(self.container, bg="grey60")
+        self.positionOptions.grid(row=4,column=0,pady=10)
         self.makePositionOptions()
 
-        self.plugboardRow = tk.Frame(self.container)
-        self.plugboardRow.grid(row=0,column=4,pady=10)
+        self.plugboardRow = tk.Frame(self.container, bg="grey60")
+        self.plugboardRow.grid(row=5,column=0,pady=10)
         self.plugString = tk.StringVar()
-        plugLabel = tk.Label(self.plugboardRow,text="Plugboard:")
+        plugLabel = tk.Label(self.plugboardRow,text="Plugboard:",bg="grey60")
         plugLabel.grid(row=0,column=0,padx=5)
-        plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString)
-        plugEntry.grid(row=1,column=0,padx=5)
+        plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString,width=47)
+        plugEntry.grid(row=0,column=1,padx=5)
         print("plugboard")
 
-        self.buttonRow = tk.Frame(self.container)
-        self.buttonRow.grid(row=0,column=5,pady=10)
+        self.buttonRow = tk.Frame(self.container, bg="grey60")
+        self.buttonRow.grid(row=6,column=0,pady=10)
+        sendButton = tk.Button(self.buttonRow,text="Send to Simulator")
 
     def makeRotorOptions(self):
         print("in rotor")
@@ -209,8 +227,8 @@ class detailsBarSim:
         for i in range(3):
             string = tk.StringVar()
             string.set(options[0])
-            dropDown = tk.OptionMenu(self.container,string,*options)
-            dropDown.grid(row=i+2,column=0,padx=5)
+            dropDown = tk.OptionMenu(self.rotorOptions,string,*options)
+            dropDown.grid(row=0,column=i+2,padx=5)
             self.rotorStrings.append(string)
 
     def makeRingOptions(self):
@@ -218,7 +236,7 @@ class detailsBarSim:
         label = tk.Label(self.ringOptions,text="Rings:",bg="grey60")
         label.grid(row=0,column=0,padx=10)
         for i in range(3):
-            self.rings.append(IntEntry(self.ringOptions))
+            self.rings.append(IntEntry(self.ringOptions,width=3))
             self.rings[i].grid(row=0,column=i+2,padx=5)
 
     def makePositionOptions(self):
@@ -226,7 +244,7 @@ class detailsBarSim:
         label = tk.Label(self.positionOptions,text="Positions:",bg="grey60")
         label.grid(row=0,column=0,padx=10)
         for i in range(3):
-            self.positions.append(IntEntry(self.positionOptions))
+            self.positions.append(IntEntry(self.positionOptions,width=3))
             self.positions[i].grid(row=0,column=i+2,padx=5)
 
     def machineChange(self,event):
@@ -240,6 +258,12 @@ class detailsBarSim:
         machine = binds.Machine(specs[index])
         vis.refresh()
         self.makeRotorOptions()
+
+    def send(self,event):
+        global machine
+        global idIndexing
+        machine.setPositions([idIndexing[self.rotorStrings[I]] for I in range(3)])
+
 
     def errorChange(self,text):
         pass
