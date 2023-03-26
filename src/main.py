@@ -212,15 +212,15 @@ class detailsBar:
         plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString,width=47)
         plugEntry.grid(row=0,column=1,padx=5)
 
+        self.buttonRow = tk.Frame(self.container, bg="grey60")
+        self.buttonRow.grid(row=6,column=0,pady=10)
+        resetButton = tk.Button(self.buttonRow,text="Reset",command=self.reset)
+        resetButton.grid(row=0,column=0,padx=10)
         if sim:
-            self.buttonRow = tk.Frame(self.container, bg="grey60")
-            self.buttonRow.grid(row=6,column=0,pady=10)
             sendButton = tk.Button(self.buttonRow,text="Send to Simulator", command = self.send)
             sendButton.grid(row=0,column=1,padx=10)
-            resetButton = tk.Button(self.buttonRow,text="Reset",command=self.reset)
-            resetButton.grid(row=0,column=0,padx=10)
 
-        self.errorBox = tk.Text(self.container,fg="red",bg="grey60",state="normal")
+        self.errorBox = tk.Text(self.container,fg="red",bg="grey60",state="disabled")
         self.errorBox.grid(row=7,column=0,pady=10)
 
         self.sim = sim
@@ -313,9 +313,11 @@ class detailsBar:
         self.machine.setPlugboard(pairs)
 
     def errorChange(self,text):
+        self.errorBox.config(state="normal")
         self.errorBox.insert(tk.END,time.strftime("%H:%M:%S ",time.localtime()))
         self.errorBox.insert(tk.END,text + "\n")
         self.errorBox.see("end")
+        self.errorBox.config(state="disabled")
 
 class visualiser:
     def __init__(self,simtab):
@@ -377,6 +379,18 @@ class stringBox:
         self.outText.set(word)
         machine.setPositions(prePos)
 
+class bigStringBox:
+    def __init__(self, tab):
+        self.container = tk.Frame(tab,bg="grey60")
+        self.container.grid(row=0,column=0,padx=10,pady=10)
+
+        self.inputBox = tk.Text(self.container,width=70,height=35,bg="white")
+        self.inputBox.insert(tk.END,"input text here")
+        self.inputBox.grid(row=0,column=0,padx=10,pady=10)
+
+        self.outputBox = tk.Text(self.container,width=70,height=35,bg="white",state="disabled")
+        self.outputBox.grid(row=0,column=1,padx=10,pady=10)
+
 root = tk.Tk()
 root.title("Enigma Education Tool")
 root.config(background="green")
@@ -395,6 +409,7 @@ def clearFocus(event):
 root.bind("<Escape>",clearFocus)
 solvetab.pack(fill='both', expand=True)
 detailsbarsolve = detailsBar(solvetab,solveMachine,sim=False)
+bigstring = bigStringBox(solvetab)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')
 
