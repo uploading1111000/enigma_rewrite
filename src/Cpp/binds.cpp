@@ -66,6 +66,6 @@ PYBIND11_MODULE(binds, m){
 		.def(py::init<MachineSpecification&, std::optional<std::array<int, 3>>, std::optional<int>,
 			std::optional<std::vector<std::array<char, 2>>>, std::string, Analyser*>(), py::arg("spec"),
 			py::arg("rotorIds") = std::optional<std::array<int, 3>>{}, py::arg("reflector") = std::optional<int>{},
-			py::arg("plugboard") = std::optional<std::vector<std::array<char, 2>>>{}, py::arg("ciphertext"),py::arg("analyser") = new IndexOfCoincidence())
+			py::arg("plugboard") = std::optional<std::vector<std::array<char, 2>>>{}, py::arg("ciphertext") = "", py::arg("analyser") = new IndexOfCoincidence())
 		.def("findRotors",&SolverMachine::findBestRotors);
 }

@@ -1,23 +1,20 @@
-from cProfile import label
 import importlib
 import tkinter as tk
 from tkinter import ttk
 import re
+import time
 binds = importlib.import_module("Cpp.out.build.x64-Release.binds")
 specs = [
     binds.MachineSpecification("src/Cpp/simulation/machineJsons/enigmaI.json"),
-    binds.MachineSpecification("src/Cpp/simulation/machineJsons/enigmaM3.json"),
-    binds.MachineSpecificationFour("src/Cpp/simulation/machineJsons/enigmaM4.json")
+    binds.MachineSpecification("src/Cpp/simulation/machineJsons/enigmaM3.json")
 ]
 options = [
     specs[0].getName(),
     specs[1].getName(),
-    specs[2].getName()
 ]
 indexing = {
     specs[0].getName(): 0,
     specs[1].getName(): 1,
-    specs[2].getName(): 2
 }
 idIndexing = {
     "I" : 0,
@@ -36,6 +33,7 @@ NGrams =[
 ]
 specIndex = 0
 machine = binds.Machine(specs[0])
+solveMachine = binds.SolverMachine(specs[0])
 alphabet = """Z
 Y
 X
@@ -181,9 +179,9 @@ class IntEntry(tk.Entry):
             return 1
         return int(val)
 
-class detailsBarSim:
-    def __init__(self,simtab):
-        self.container = tk.Frame(simtab,bg="grey60")
+class detailsBar:
+    def __init__(self,tab,mac=machine,sim=True):
+        self.container = tk.Frame(tab,bg="grey60")
         self.container.grid(column=1,row=0, padx=10, pady=10)
 
         self.value = tk.StringVar()
@@ -214,10 +212,19 @@ class detailsBarSim:
         plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString,width=47)
         plugEntry.grid(row=0,column=1,padx=5)
 
-        self.buttonRow = tk.Frame(self.container, bg="grey60")
-        self.buttonRow.grid(row=6,column=0,pady=10)
-        sendButton = tk.Button(self.buttonRow,text="Send to Simulator", command = self.send)
-        sendButton.grid(row=0,column=1,padx=10)
+        if sim:
+            self.buttonRow = tk.Frame(self.container, bg="grey60")
+            self.buttonRow.grid(row=6,column=0,pady=10)
+            sendButton = tk.Button(self.buttonRow,text="Send to Simulator", command = self.send)
+            sendButton.grid(row=0,column=1,padx=10)
+            resetButton = tk.Button(self.buttonRow,text="Reset",command=self.reset)
+            resetButton.grid(row=0,column=0,padx=10)
+
+        self.errorBox = tk.Text(self.container,fg="red",bg="grey60",state="normal")
+        self.errorBox.grid(row=7,column=0,pady=10)
+
+        self.sim = sim
+        self.machine = mac
 
     def makeRotorOptions(self):
         global specs
@@ -250,7 +257,7 @@ class detailsBarSim:
             self.positions.append(IntEntry(self.positionOptions,width=3))
             self.positions[i].grid(row=0,column=i+2,padx=5)
 
-    def clearRingsAndRotors(self):
+    def reset(self):
         for ring in self.rings:
             ring.set("1")
         for position in self.positions:
@@ -265,26 +272,24 @@ class detailsBarSim:
     def machineChange(self,event):
         global indexing
         global specs
-        global machine
         global vis
         global specIndex
         index = indexing[self.value.get()]
         specIndex = index
-        machine = binds.Machine(specs[index])
+        self.machine = binds.Machine(specs[index])
         vis.refresh()
         for d in self.dropDown:
             d.grid_forget()
         self.makeRotorOptions()
-        self.clearRingsAndRotors()
+        self.reset()
 
     def send(self,*args):
-        global machine
         global vis
         global idIndexing
         global stringbox
-        machine.setRotors([idIndexing[self.rotorStrings[i].get()] for i in range(3)])
-        machine.setRings([self.rings[i].getValid() for i in range(3)])
-        machine.setPositions([self.positions[i].getValid() for i in range(3)])
+        self.machine.setRotors([idIndexing[self.rotorStrings[i].get()] for i in range(3)])
+        self.machine.setRings([self.rings[i].getValid() for i in range(3)])
+        self.machine.setPositions([self.positions[i].getValid() for i in range(3)])
         self.handlePlugboard()
         vis.refresh()
         stringbox.update()
@@ -305,10 +310,12 @@ class detailsBarSim:
                 pairs.append([cleaned[index],cleaned[index+1]])
                 used.add(cleaned[index])
                 used.add(cleaned[index+1])
-        machine.setPlugboard(pairs)
+        self.machine.setPlugboard(pairs)
 
     def errorChange(self,text):
-        pass
+        self.errorBox.insert(tk.END,time.strftime("%H:%M:%S ",time.localtime()))
+        self.errorBox.insert(tk.END,text + "\n")
+        self.errorBox.see("end")
 
 class visualiser:
     def __init__(self,simtab):
@@ -360,8 +367,8 @@ class stringBox:
             return None
         cleaned = clean(toValidate)
         if len(cleaned)==0:
-            global detailsBarSim
-            detailsBarSim.errorChange("Encrypt string has no readable text")
+            global detailsbarsim
+            detailsbarsim.errorChange("Encrypt string has no readable text")
             self.outText.set("")
             return None
         global machine
@@ -376,9 +383,9 @@ root.config(background="green")
 notebook = ttk.Notebook(root)
 notebook.pack(expand=True)
 simtab = tk.Frame(notebook, bg="green")
-solvetab = tk.Frame(notebook)
+solvetab = tk.Frame(notebook, bg = "green")
 simtab.pack(fill='both', expand=True)
-detailsbarsim = detailsBarSim(simtab)
+detailsbarsim = detailsBar(simtab,machine)
 stringbox = stringBox(simtab)
 vis = visualiser(simtab)
 root.bind("<KeyPress>",vis.keyPress)
@@ -387,6 +394,7 @@ def clearFocus(event):
     root.focus_set()
 root.bind("<Escape>",clearFocus)
 solvetab.pack(fill='both', expand=True)
+detailsbarsolve = detailsBar(solvetab,solveMachine,sim=False)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')
 
