@@ -26,6 +26,7 @@ idIndexing = {
     "VII" : 6,
     "VIII" : 7
 }
+IOC = binds.IndexOfCoincidence()
 NGrams =[
    binds.BiGram("src/Cpp/ngramData/gramsbi.bin"),
    binds.TriGram("src/Cpp/ngramData/gramstri.bin"),
@@ -276,7 +277,10 @@ class detailsBar:
         global specIndex
         index = indexing[self.value.get()]
         specIndex = index
-        self.machine = binds.Machine(specs[index])
+        if self.sim:
+            self.machine = binds.Machine(specs[index])
+        else:
+            self.machine = binds.SolverMachine(specs[index])
         vis.refresh()
         for d in self.dropDown:
             d.grid_forget()
@@ -318,6 +322,27 @@ class detailsBar:
         self.errorBox.insert(tk.END,text + "\n")
         self.errorBox.see("end")
         self.errorBox.config(state="disabled")
+
+    def changeRotors(self, rotors):
+        global specs
+        global specIndex
+        options = specs[specIndex].getRotorIDs()
+        for i in range(3):
+            self.rotorStrings[i].set(options[rotors[i]])
+
+    def changePositions(self,positions):
+        for i in range(3):
+            self.positions[i].set(str(positions[i]))
+
+    def changeRings(self,rings):
+        for i in range(3):
+            self.rings[i].set(str(rings[i]))
+
+    def changePlugboard(self, plugboard):
+        stringRep = ""
+        for pair in plugboard:
+            stringRep = stringRep + chr(pair[0]+64) + chr(pair[1]+64) + " "
+        self.plugString.set(stringRep)
 
 class visualiser:
     def __init__(self,simtab):
@@ -390,6 +415,56 @@ class bigStringBox:
 
         self.outputBox = tk.Text(self.container,width=70,height=35,bg="white",state="disabled")
         self.outputBox.grid(row=0,column=1,padx=10,pady=10)
+    def getText(self):
+        raw = self.inputBox.get()
+        cleaned = clean(raw)
+        if len(cleaned) == 0:
+            global detailsbarsolve
+            detailsbarsolve.errorChange("invalid/zero length cipher text given")
+            return ""
+        else:
+            return cleaned
+    def setOut(self,text):
+        self.outputBox.config(state="normal")
+        self.outputBox.delete("1.0",tk.END)
+        self.outputBox.insert("1.0",text)
+        self.outputBox.config(state="disabled")
+
+class buttonsBar:
+    def __init__(self,tab):
+        self.container = tk.Frame(tab,bg="grey60")
+        self.container.grid(row=1,column=0,padx=10,pady=10)
+
+    def rotorCrack(self,*args):
+        pass
+    
+    def ringCrack(self,*args):
+        pass
+
+    def plugCrack(self,*args):
+        pass
+
+    def fullCrack(self,*args):
+        self.setAnalyzerIOC()
+        self.rotorCrack()
+        self.setAnalyzerBiGram()
+        self.ringCrack()
+        self.setAnalyzerQuadGram()
+        self.plugCrack()
+
+    def setAnalyzerIOC(self):
+        solveMachine.setAnalyzer(IOC)
+
+    def setAnalyzerBiGram(self):
+        solveMachine.setAnalyzer(NGrams[0])
+
+    def setAnalyzerTriGram(self):
+        solveMachine.setAnalyzer(NGrams[1])
+
+    def setAnalyzerQuadGram(self):
+        solveMachine.setAnalyzer(NGrams[2])
+
+
 
 root = tk.Tk()
 root.title("Enigma Education Tool")
