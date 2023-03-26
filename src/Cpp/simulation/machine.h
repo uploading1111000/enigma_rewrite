@@ -32,6 +32,7 @@ public:
 	void decrementPosition(int N);
 	void incrementRing(int N);
 	void decrementRing(int N);
+	void setPlugboard(std::vector<std::array<char, 2>> letterpairs);
 	int getPosition(int N) { return rotors[N].getPosition(); };
 	std::array<int, 3> getPositions() { return { rotors[0].getPosition(),rotors[1].getPosition(),rotors[2].getPosition() }; };
 	int getRing(int N) { return rotors[N].getRingPosition(); };

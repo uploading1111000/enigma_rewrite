@@ -122,7 +122,6 @@ class tkRotor():
             self.positionIndicator.configure(text=str(machine.getPosition(self.index-2)))
             self.ringBox.configure(text=("Ring: " + str(machine.getRing(self.index-2))))
             turnovers = machine.getTurnpoints(self.index-2)
-       
         self.updateWiries(wirings,turnovers)
 
     def changeButtonUp(self):
@@ -155,7 +154,6 @@ class tkRotor():
         machine.incrementRing(self.index-2)
         self.parent.refresh()
 
-#shamelessly stolen
 class IntEntry(tk.Entry):
     def __init__(self, master=None, **kwargs):
         self.var = tk.StringVar()
@@ -167,15 +165,21 @@ class IntEntry(tk.Entry):
 
     def check(self, *args):
         new = self.get()
-        if new.isdigit:
+        if len(new) == 0:
+            self.oldvalue = new
+        elif new.isdigit():
             if int(new) >= 1 and int(new) <= 26:
                 self.oldvalue = new
             else:
                 self.set(self.oldvalue)
-        elif len(new) == 0:
-            self.oldvalue = new
         else:
             self.set(self.oldvalue)
+
+    def getValid(self):
+        val = self.get()
+        if len(val) == 0:
+            return 1
+        return int(val)
 
 class detailsBarSim:
     def __init__(self,simtab):
@@ -209,26 +213,25 @@ class detailsBarSim:
         plugLabel.grid(row=0,column=0,padx=5)
         plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString,width=47)
         plugEntry.grid(row=0,column=1,padx=5)
-        print("plugboard")
 
         self.buttonRow = tk.Frame(self.container, bg="grey60")
         self.buttonRow.grid(row=6,column=0,pady=10)
-        sendButton = tk.Button(self.buttonRow,text="Send to Simulator")
+        sendButton = tk.Button(self.buttonRow,text="Send to Simulator", command = self.send)
+        sendButton.grid(row=0,column=1,padx=10)
 
     def makeRotorOptions(self):
-        print("in rotor")
         global specs
         global specIndex
         options = specs[specIndex].getRotorIDs()
-        print(options)
         label = tk.Label(self.rotorOptions,text="Rotors:",bg="grey60")
         label.grid(row=0,column=0,padx=10)
         self.rotorStrings = []
+        self.dropDown = []
         for i in range(3):
             string = tk.StringVar()
-            string.set(options[0])
-            dropDown = tk.OptionMenu(self.rotorOptions,string,*options)
-            dropDown.grid(row=0,column=i+2,padx=5)
+            string.set(options[i])
+            self.dropDown.append(tk.OptionMenu(self.rotorOptions,string,*options))
+            self.dropDown[i].grid(row=0,column=i+2,padx=5)
             self.rotorStrings.append(string)
 
     def makeRingOptions(self):
@@ -247,6 +250,18 @@ class detailsBarSim:
             self.positions.append(IntEntry(self.positionOptions,width=3))
             self.positions[i].grid(row=0,column=i+2,padx=5)
 
+    def clearRingsAndRotors(self):
+        for ring in self.rings:
+            ring.set("1")
+        for position in self.positions:
+            position.set("1")
+        self.plugString.set("")
+        global specs
+        global specIndex
+        options = specs[specIndex].getRotorIDs()
+        for i in range(3):
+            self.rotorStrings[i].set(options[i])
+
     def machineChange(self,event):
         global indexing
         global specs
@@ -257,13 +272,40 @@ class detailsBarSim:
         specIndex = index
         machine = binds.Machine(specs[index])
         vis.refresh()
+        for d in self.dropDown:
+            d.grid_forget()
         self.makeRotorOptions()
+        self.clearRingsAndRotors()
 
-    def send(self,event):
+    def send(self,*args):
         global machine
+        global vis
         global idIndexing
-        machine.setPositions([idIndexing[self.rotorStrings[I]] for I in range(3)])
+        global stringbox
+        machine.setRotors([idIndexing[self.rotorStrings[i].get()] for i in range(3)])
+        machine.setRings([self.rings[i].getValid() for i in range(3)])
+        machine.setPositions([self.positions[i].getValid() for i in range(3)])
+        self.handlePlugboard()
+        vis.refresh()
+        stringbox.update()
 
+    def handlePlugboard(self):
+        raw = self.plugString.get()
+        cleaned = clean(raw)
+        if len(cleaned) % 2 != 0:
+            self.errorChange("invalid plugboard length. ignoring last letter")
+            cleaned = cleaned[:-1]
+        pairs = []
+        used = set()
+        for index in range(0,len(cleaned),2):
+            if cleaned[index] in used or cleaned[index+1] in used:
+                print("multiple use")
+                self.errorChange("same letter used multiple times in plug. ignoring duplicate pair")
+            else:
+                pairs.append([cleaned[index],cleaned[index+1]])
+                used.add(cleaned[index])
+                used.add(cleaned[index+1])
+        machine.setPlugboard(pairs)
 
     def errorChange(self,text):
         pass
@@ -311,7 +353,7 @@ class stringBox:
         self.output = tk.Entry(self.container,width=180,state="readonly", textvariable=self.outText)
         self.output.grid(column=0,row=1,padx=10,pady=10)
 
-    def update(self,var,index,mode):
+    def update(self,*args):
         toValidate = self.inText.get()
         if len(toValidate) == 0:
             self.outText.set("")
@@ -343,7 +385,7 @@ root.bind("<KeyPress>",vis.keyPress)
 def clearFocus(event):
     global root
     root.focus_set()
-root.bind("<Return>",clearFocus)
+root.bind("<Escape>",clearFocus)
 solvetab.pack(fill='both', expand=True)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')

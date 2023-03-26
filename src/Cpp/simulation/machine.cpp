@@ -2,6 +2,8 @@
 #include "machine.h"
 #include "machine.h"
 #include "machine.h"
+#include "machine.h"
+#include "machine.h"
 
 inline int convert(char in) {
 	return (int) in - 64;
@@ -231,6 +233,11 @@ void Machine::decrementRing(int N) {
 	int preRing = rotors[N].getRingPosition() - 1;
 	normalise(preRing);
 	rotors[N].setRing(preRing);
+}
+
+void Machine::setPlugboard(std::vector<std::array<char, 2>> letterpairs)
+{
+	plugboard = Plugboard(letterpairs);
 }
 
 std::vector<int> Machine::getTurnpoints(int N) {
