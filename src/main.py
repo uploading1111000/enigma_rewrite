@@ -210,7 +210,7 @@ class detailsBar:
         self.plugString = tk.StringVar()
         plugLabel = tk.Label(self.plugboardRow,text="Plugboard:",bg="grey60")
         plugLabel.grid(row=0,column=0,padx=5)
-        plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString,width=47)
+        plugEntry = tk.Entry(self.plugboardRow,textvariable=self.plugString,width=44)
         plugEntry.grid(row=0,column=1,padx=5)
 
         self.buttonRow = tk.Frame(self.container, bg="grey60")
@@ -221,7 +221,7 @@ class detailsBar:
             sendButton = tk.Button(self.buttonRow,text="Send to Simulator", command = self.send)
             sendButton.grid(row=0,column=1,padx=10)
 
-        self.errorBox = tk.Text(self.container,fg="red",bg="grey60",state="disabled")
+        self.errorBox = tk.Text(self.container,fg="red",bg="grey60",state="disabled",width=44,height=10)
         self.errorBox.grid(row=7,column=0,pady=10)
 
         self.sim = sim
@@ -344,6 +344,19 @@ class detailsBar:
             stringRep = stringRep + chr(pair[0]+64) + chr(pair[1]+64) + " "
         self.plugString.set(stringRep)
 
+    def retrieve(self):
+        for i in range(3):
+            self.rotorStrings[i].set(self.machine.getRotorID(i))
+            self.rings[i].set(chr(self.machine.getRing(i)+64))
+            self.positions[i].set(chr(self.machine.getPosition(i)+64))
+        wiring = self.machine.getWiring(5)
+        pairs = set()
+        for i,j in enumerate(wiring):
+            if i + 1 != j:
+                pairs.add([j,i+1])
+        pairs = list(pairs)
+        self.changePlugboard(pairs)
+
 class visualiser:
     def __init__(self,simtab):
         self.box = tk.Frame(simtab,bg = "grey60")
@@ -409,14 +422,14 @@ class bigStringBox:
         self.container = tk.Frame(tab,bg="grey60")
         self.container.grid(row=0,column=0,padx=10,pady=10)
 
-        self.inputBox = tk.Text(self.container,width=70,height=35,bg="white")
+        self.inputBox = tk.Text(self.container,width=68,height=35,bg="white")
         self.inputBox.insert(tk.END,"input text here")
         self.inputBox.grid(row=0,column=0,padx=10,pady=10)
 
-        self.outputBox = tk.Text(self.container,width=70,height=35,bg="white",state="disabled")
+        self.outputBox = tk.Text(self.container,width=68,height=35,bg="white",state="disabled")
         self.outputBox.grid(row=0,column=1,padx=10,pady=10)
     def getText(self):
-        raw = self.inputBox.get()
+        raw = self.inputBox.get("1.0",tk.END)
         cleaned = clean(raw)
         if len(cleaned) == 0:
             global detailsbarsolve
@@ -434,15 +447,44 @@ class buttonsBar:
     def __init__(self,tab):
         self.container = tk.Frame(tab,bg="grey60")
         self.container.grid(row=1,column=0,padx=10,pady=10)
+        topRowStrings = ["Solve Rotors","Solve Rings","Solve Plugs","Full Solve"]
+        topRowColours = ["white","white","white","lime"]
+        topRowCommands = [self.rotorCrack,self.ringCrack,self.plugCrack,self.fullCrack]
+        bottomRowStrings = ["Use IOC","Use BiGrams","Use TriGram","Use QuadGram"]
+        bottomRowCommands = [self.setAnalyzerIOC,self.setAnalyzerBiGram,self.setAnalyzerTriGram,self.setAnalyzerQuadGram]
+        for i in range(4):
+            v = tk.Button(self.container,text=topRowStrings[i],bg=topRowColours[i],command=topRowCommands[i])
+            v.grid(row=0,column=i,padx=10,pady=10)
+        for i in range(4):
+            v = tk.Button(self.container,text=bottomRowStrings[i],bg="blue",command=bottomRowCommands[i])
+            v.grid(row=1,column=i,padx=10,pady=10)
 
     def rotorCrack(self,*args):
-        pass
+        global detailsbarsolve
+        global solveMachine
+        global bigstring
+        detailsbarsolve.send()
+        solveMachine.changeCiphertext(bigstring.getText())
+        solveMachine.findRotors()
+        detailsbarsolve.retrieve()
     
     def ringCrack(self,*args):
-        pass
+        global detailsbarsolve
+        global solveMachine
+        global bigstring
+        solveMachine.changeCiphertext(bigstring.getText())
+        detailsbarsolve.send()
+        solveMachine.findRotors()
+        detailsbarsolve.retrieve()
 
     def plugCrack(self,*args):
-        pass
+        global detailsbarsolve
+        global solveMachine
+        global bigstring
+        solveMachine.changeCiphertext(bigstring.getText())
+        detailsbarsolve.send()
+        solveMachine.findRotors()
+        detailsbarsolve.retrieve()
 
     def fullCrack(self,*args):
         self.setAnalyzerIOC()
@@ -452,16 +494,16 @@ class buttonsBar:
         self.setAnalyzerQuadGram()
         self.plugCrack()
 
-    def setAnalyzerIOC(self):
+    def setAnalyzerIOC(self,*args):
         solveMachine.setAnalyzer(IOC)
 
-    def setAnalyzerBiGram(self):
+    def setAnalyzerBiGram(self,*args):
         solveMachine.setAnalyzer(NGrams[0])
 
-    def setAnalyzerTriGram(self):
+    def setAnalyzerTriGram(self,*args):
         solveMachine.setAnalyzer(NGrams[1])
 
-    def setAnalyzerQuadGram(self):
+    def setAnalyzerQuadGram(self,*args):
         solveMachine.setAnalyzer(NGrams[2])
 
 
@@ -485,6 +527,7 @@ root.bind("<Escape>",clearFocus)
 solvetab.pack(fill='both', expand=True)
 detailsbarsolve = detailsBar(solvetab,solveMachine,sim=False)
 bigstring = bigStringBox(solvetab)
+buttonbar = buttonsBar(solvetab)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')
 

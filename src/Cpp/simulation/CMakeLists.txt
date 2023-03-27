@@ -15,13 +15,13 @@ target_link_libraries(machineSpecification PUBLIC
 		rotorSpecification
 		nlohmann_json::nlohmann_json
 )
-add_library(machineSpecificationFour machineSpecification4.cpp)
+#[[add_library(machineSpecificationFour machineSpecification4.cpp)
 target_link_libraries(machineSpecificationFour PUBLIC
 		wirings
 		rotorSpecification
 		machineSpecification
 		nlohmann_json::nlohmann_json
-)
+)]]
 add_library(machine machine.cpp)
 target_link_libraries(machine PUBLIC
 		machineSpecification
@@ -31,10 +31,10 @@ target_link_libraries(machine PUBLIC
 target_include_directories(machine PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
 )
-add_library(machineFour machine4.cpp)
+#[[add_library(machineFour machine4.cpp)
 target_link_libraries(machineFour PUBLIC
 		machine
 )
 target_include_directories(machineFour PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}
-)
+)]]

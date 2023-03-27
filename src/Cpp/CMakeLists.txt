@@ -31,11 +31,11 @@ pybind11_add_module(binds binds.cpp)
 )]]
 target_link_libraries(binds PUBLIC 
         machineSpecification
-        machineSpecificationFour
+#        machineSpecificationFour
         machine
-        machineFour
+#        machineFour
         solverMachine
-        solverMachineFour
+#        solverMachineFour
         IOC
         NGram
 )

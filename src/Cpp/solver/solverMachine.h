@@ -29,7 +29,7 @@ struct maxPlugs {
 	std::array<int,2> newPair;
 };
 
-class SolverMachine : virtual public Machine {
+class SolverMachine : public Machine {
 protected:
 	std::array<int, 3> initialPositions;
 	Analyser* analyser;
@@ -46,4 +46,5 @@ public:
 	void setPosition(int N, int pos);
 	void setPositions(std::array<int, 3>);
 	void homePosition();
+	void changeCiphertext(std::string in) {ciphertext = vectorFromString(in);};
 };
