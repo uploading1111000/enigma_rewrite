@@ -34,9 +34,11 @@ PYBIND11_MODULE(binds, m){
 		.def("incrementRing", &Machine::incrementRing)
 		.def("decrementRing", &Machine::decrementRing)
 		.def("getRotorID", &Machine::getRotorID)
+		.def("getRotorIDs", &Machine::getRotorIDs)
 		.def("getPosition", &Machine::getPosition)
 		.def("getPositions",&Machine::getPositions)
 		.def("getRing",&Machine::getRing)
+		.def("getRings", &Machine::getRings)
 		.def("getTurnpoints",&Machine::getTurnpoints);
 	py::class_<Analyser>(m, "AbstractAnalyser")
 		.def("getName", &Analyser::getName);

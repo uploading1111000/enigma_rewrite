@@ -36,8 +36,22 @@ public:
 	int getPosition(int N) { return rotors[N].getPosition(); };
 	std::array<int, 3> getPositions() { return { rotors[0].getPosition(),rotors[1].getPosition(),rotors[2].getPosition() }; };
 	int getRing(int N) { return rotors[N].getRingPosition(); };
+	std::array<int, 3> getRings() {
+		std::array<int, 3> returnable;
+		for (int i = 0; i < 3; i++) {
+			returnable[i] = rotors[i].getRingPosition();
+		}
+		return returnable;
+	}
 	std::vector<int> getTurnpoints(int N);
 	std::string getRotorID(int N) { return rotors[N].getRotorID(); };
+	std::array<std::string,3> getRotorIDs(){
+		std::array<std::string,3> returnable;
+		for (int i = 0; i < 3; i++) {
+			returnable[i] = rotors[i].getRotorID();
+		}
+		return returnable;
+	}
 	Rotor* getRotor(int N) { return &rotors[N]; }
 	Reflector* getReflector() { return &reflector; };
 	Plugboard* getPlugboard() { return &plugboard; };

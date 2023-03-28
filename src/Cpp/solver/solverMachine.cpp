@@ -1,14 +1,10 @@
 #include "solverMachine.h"
-#include "solverMachine.h"
-#include "solverMachine.h"
-#include "solverMachine.h"
-#include "solverMachine.h"
 #include <iostream>
 
 
 SolverMachine::SolverMachine(MachineSpecification& spec, std::optional<std::array<int,3>> rotorIndexes, std::optional<int> reflector, 
 		std::optional<std::vector<std::array<char, 2>>> plugPairs, std::string ciphertextIn, Analyser* analyserIn):
-		Machine::Machine(spec,rotorIndexes ? rotorIndexes.value() : std::array<int,3>{2, 1, 0}, reflector ? reflector.value() : 0, plugPairs ? plugPairs.value() : std::vector<std::array<char,2>>{}) {
+		Machine::Machine(spec,rotorIndexes ? rotorIndexes.value() : std::array<int,3>{2, 1, 0}, reflector ? reflector.value() : 1, plugPairs ? plugPairs.value() : std::vector<std::array<char,2>>{}) {
 	ciphertext = vectorFromString(ciphertextIn);
 	analyser = analyserIn;
 	for (int i = 0; i < 3; i++) {
@@ -145,7 +141,7 @@ maxPosition SolverMachine::findBestPositions(){
 				rotors[left].setPosition(li);
 				rotors[middle].setPosition(mi);
 				rotors[right].setPosition(ri);
-				std::vector<int> result = this->encryptWord(ciphertext);
+				std::vector<int> result = encryptWord(ciphertext);
 				float score = analyser->score(result);
 				if ( score > max.score){
 					max = {{li,mi,ri},score};

@@ -328,7 +328,7 @@ class detailsBar:
         global specIndex
         options = specs[specIndex].getRotorIDs()
         for i in range(3):
-            self.rotorStrings[i].set(options[rotors[i]])
+            self.rotorStrings[i].set(rotors[i])
 
     def changePositions(self,positions):
         for i in range(3):
@@ -341,20 +341,23 @@ class detailsBar:
     def changePlugboard(self, plugboard):
         stringRep = ""
         for pair in plugboard:
-            stringRep = stringRep + chr(pair[0]+64) + chr(pair[1]+64) + " "
+            stringRep = stringRep + pair + " "
         self.plugString.set(stringRep)
 
     def retrieve(self):
-        for i in range(3):
-            self.rotorStrings[i].set(self.machine.getRotorID(i))
-            self.rings[i].set(chr(self.machine.getRing(i)+64))
-            self.positions[i].set(chr(self.machine.getPosition(i)+64))
+        self.changeRotors(self.machine.getRotorIDs())
+        self.changePositions(self.machine.getPositions())
+        self.changeRings(self.machine.getRings())
         wiring = self.machine.getWiring(5)
-        pairs = set()
+        pairs = []
+        marked = set()
         for i,j in enumerate(wiring):
-            if i + 1 != j:
-                pairs.add([j,i+1])
-        pairs = list(pairs)
+            if (i+1) in marked:
+                continue
+            elif i + 1 != j:
+                marked.add(j)
+                marked.add(i+1)
+                pairs.append(chr(j+64) + chr(i+65))
         self.changePlugboard(pairs)
 
 class visualiser:
@@ -464,9 +467,16 @@ class buttonsBar:
         global solveMachine
         global bigstring
         detailsbarsolve.send()
+        print(solveMachine.getRotorIDs())
+        print(solveMachine.getPositions())
+        print(solveMachine.getRings())
+        print(solveMachine.encryptLetterVerbose("P"))
+        print(solveMachine.encryptWord(bigstring.getText()))
         solveMachine.changeCiphertext(bigstring.getText())
         solveMachine.findRotors()
         detailsbarsolve.retrieve()
+        result = solveMachine.encryptWord(bigstring.getText())
+        bigstring.setOut(result)
     
     def ringCrack(self,*args):
         global detailsbarsolve
@@ -474,8 +484,10 @@ class buttonsBar:
         global bigstring
         solveMachine.changeCiphertext(bigstring.getText())
         detailsbarsolve.send()
-        solveMachine.findRotors()
+        solveMachine.findRings()
         detailsbarsolve.retrieve()
+        result = solveMachine.encryptWord(bigstring.getText())
+        bigstring.setOut(result)
 
     def plugCrack(self,*args):
         global detailsbarsolve
@@ -483,8 +495,10 @@ class buttonsBar:
         global bigstring
         solveMachine.changeCiphertext(bigstring.getText())
         detailsbarsolve.send()
-        solveMachine.findRotors()
+        solveMachine.findPlugs()
         detailsbarsolve.retrieve()
+        result = solveMachine.encryptWord(bigstring.getText())
+        bigstring.setOut(result)
 
     def fullCrack(self,*args):
         self.setAnalyzerIOC()
@@ -523,11 +537,18 @@ root.bind("<KeyPress>",vis.keyPress)
 def clearFocus(event):
     global root
     root.focus_set()
+
+def debug(*args):
+    text = clean(bigstring.getText())
+    string = [ord(l)-64 for l in text]
+    print(IOC.score(string))
 root.bind("<Escape>",clearFocus)
 solvetab.pack(fill='both', expand=True)
 detailsbarsolve = detailsBar(solvetab,solveMachine,sim=False)
 bigstring = bigStringBox(solvetab)
 buttonbar = buttonsBar(solvetab)
+funnylittlebutton = tk.Button(solvetab,command=debug)
+funnylittlebutton.grid(row=1,column=1)
 notebook.add(simtab, text='Emulator')
 notebook.add(solvetab, text='Solver')
 
