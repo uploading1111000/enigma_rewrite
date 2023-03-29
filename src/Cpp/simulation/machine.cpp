@@ -24,6 +24,7 @@ Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int re
 void Machine::incrementRotor(int N) {
 	int curr = rotors[N].getID();
 	curr++;
+	std::cout << this->getSpecification()->getRotorLength() << "\n";
 	if (curr >= this->getSpecification()->getRotorLength()) {
 		curr = 0;
 	}

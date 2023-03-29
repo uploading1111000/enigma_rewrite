@@ -1,4 +1,5 @@
 import importlib
+from textwrap import indent
 import tkinter as tk
 from tkinter import ttk
 import re
@@ -278,9 +279,13 @@ class detailsBar:
         index = indexing[self.value.get()]
         specIndex = index
         if self.sim:
-            self.machine = binds.Machine(specs[index])
+            global machine
+            machine = binds.Machine(specs[index])
+            self.machine = machine
         else:
-            self.machine = binds.SolverMachine(specs[index])
+            global solveMachine
+            solveMachine = binds.SolverMachine(specs[index])
+            self.machine = solveMachine
         vis.refresh()
         for d in self.dropDown:
             d.grid_forget()
