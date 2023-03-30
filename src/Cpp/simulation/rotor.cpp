@@ -43,10 +43,10 @@ Rotor::Rotor() :
 {
 }
 
-bool Rotor::mutate(bool previous)
+bool Rotor::mutate(bool previous) //mutates the rotor based on whether the previous rotor allows/ says it should move
 {
-	bool next = false;
-	bool flag = previous;
+	bool next = false; 
+	bool flag = previous; //flag used so rotor can only step once at the end
 	switch (place) {
 	case right:
 		if ((turnpoints[0]==position || turnpoints[1] == position) && flag) {
@@ -54,32 +54,32 @@ bool Rotor::mutate(bool previous)
 		}
 		break;
 	case middle:
-		if (turnpoints[0] == position || turnpoints[1] == position) {
+		if (turnpoints[0] == position || turnpoints[1] == position) { //double stepping
 			flag = true;
 			next = true;
 		}
 		break;
 	}
-	if (flag) { position = (position < 26) ? position + 1 : 1;}
+	if (flag) { position = (position < 26) ? position + 1 : 1;} //increment. conditional statement does rollover
 	return next;
 }
 
 int Rotor::Transform(int in)
 {
-	int toTrans = in + position - ringPosition;
-	normalise(toTrans);
-	int transformed = Wirings::Transform(toTrans);
-	int returnable = transformed - position + ringPosition;
+	int toTrans = in + position - ringPosition; //correct input on right for the position and rings
+	normalise(toTrans); 
+	int transformed = Wirings::Transform(toTrans); //send to static wires
+	int returnable = transformed - position + ringPosition; //correct out on left for the position and rings
 	normalise(returnable);
 	return returnable;
 }
 
 int Rotor::TransformReverse(int in)
 {
-	int toTrans = in + position - ringPosition;
+	int toTrans = in + position - ringPosition; //correct input on left for position and rings
 	normalise(toTrans);
-	int transformed = Wirings::TransformReverse(toTrans);
-	int returnable = transformed - position + ringPosition;
+	int transformed = Wirings::TransformReverse(toTrans); //send to static wires
+	int returnable = transformed - position + ringPosition; //correct output on right for position and rings
 	normalise(returnable);
 	return returnable;
 }

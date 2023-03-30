@@ -5,7 +5,7 @@
 #pragma  once
 class RotorSpecification : public Wirings{
 protected:
-	std::array<int, 2> turnpoints; //turnpoint will be a set of points at which the rotor will turn the next one
+	std::array<int, 2> turnpoints; //turnpoint is a set of points at which the rotor will turn the next rotors
 public:
 	RotorSpecification(int ID);
 	RotorSpecification(int ID, std::array<int, 26> wirings, std::array<int,2>);

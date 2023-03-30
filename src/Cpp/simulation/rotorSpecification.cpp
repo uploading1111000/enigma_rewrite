@@ -34,11 +34,11 @@ const char romanNumerals[8][6] = { "I","II","III","IV","V","VI","VII","VIII" };
 
 std::string RotorSpecification::getRotorID(int ID)
 {
-	if (!(ID >= 0 && ID <= 9)) return "";
+	if (!(ID >= 0 && ID <= 9)) return ""; //statically converts a number to a name
 	return (std::string) romanNumerals[ID];
 }
 
-const std::unordered_map<std::string, int> numeralsRoman
+const std::unordered_map<std::string, int> numeralsRoman //converts a name to an id
 {
 	{"I",0},
 	{"II",1},
@@ -50,12 +50,12 @@ const std::unordered_map<std::string, int> numeralsRoman
 	{"VIII",7},
 };
 
-int RotorSpecification::getID(std::string rotor)
+int RotorSpecification::getID(std::string rotor) //statically converts a name to a number
 {
 	try {
 		return numeralsRoman.at(rotor);
 	}
-	catch (std::out_of_range) {
+	catch (std::out_of_range) { //validation and error handling
 		return -1;
 	}
 
