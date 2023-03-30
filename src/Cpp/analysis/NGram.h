@@ -6,8 +6,8 @@
 
 class BiGram: public Analyser {
 protected:
-	std::unique_ptr<std::array<float, 1<<(2*5)>> frequencies;
-public:
+	std::unique_ptr<std::array<float, 1<<(2*5)>> frequencies; //a pointer is used to allocate the frequencies on heap not stack
+public:                                                       //a unique pointer is used so memory management is easier
 	BiGram(std::string);
 	float score(std::vector<int>);
 };

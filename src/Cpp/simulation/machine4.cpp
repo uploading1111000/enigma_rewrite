@@ -1,4 +1,5 @@
 #include "machine4.h"
+//same as in machine
 inline int convert(char in) {
 	return (int)in - 64;
 }
@@ -10,7 +11,7 @@ MachineFour::MachineFour(MachineSpecificationFour& spec, std::array<int, 3> roto
 {
 	specification = &spec;
 	for (int i = 0; i < 3; i++) {
-		rotors[i] = Rotor(specification->getRotor(rotorIds[i]));
+		rotors[i] = Rotor(specification->getRotor(rotorIds[i])); //NEEDS TO BE REWRITTEN TO USE ROTOR SET
 	}
 	reflector = specification->getReflector(reflectorId);
 	plugboard = Plugboard(plugboardPairs);
@@ -22,7 +23,7 @@ void MachineFour::setRotorFour(int id)
 	rotor4 = Rotor(this->getSpecification()->getRotorFour(id));
 }
 
-int MachineFour::encryptLetter(int start)
+int MachineFour::encryptLetter(int start) //see machine
 {
 	std::cout << "hello\n";
 	mutateRotors();
@@ -34,7 +35,7 @@ int MachineFour::encryptLetter(int start)
 
 	int leftF = rotors[left].Transform(middleF);
 
-	int fourthF = rotor4.Transform(leftF);
+	int fourthF = rotor4.Transform(leftF); //main difference between this and machine is usage of rotor4
 
 	int reflected = reflector.Transform(fourthF);
 
@@ -49,7 +50,7 @@ int MachineFour::encryptLetter(int start)
 	return plugboard.TransformReverse(rightR);
 }
 
-std::vector<int> MachineFour::encryptLetterVerbose(int start)
+std::vector<int> MachineFour::encryptLetterVerbose(int start) //see machine
 {
 	std::cout << start << "\n";
 	std::vector<int> returnable;
@@ -91,7 +92,7 @@ std::vector<int> MachineFour::encryptLetterVerbose(int start)
 	returnable.push_back(plugR);
 	return returnable;
 }
-std::string MachineFour::encryptLetterVerbose(char letter)
+std::string MachineFour::encryptLetterVerbose(char letter) //this is unnecessary, was being used to debug pybind issues
 {
 	std::cout << letter << "\n";
 	int start = convert(letter);
@@ -102,7 +103,7 @@ std::string MachineFour::encryptLetterVerbose(char letter)
 	}
 	return returnable;
 }
-char MachineFour::encryptLetter(char letter)
+char MachineFour::encryptLetter(char letter) //see above
 {
 	int start = convert(letter);
 	int out = start;
@@ -110,7 +111,7 @@ char MachineFour::encryptLetter(char letter)
 	else if (start > 32 and start < 59) out = this->encryptLetter(start - 32);
 	return convert(out);
 }
-std::string MachineFour::encryptWord(std::string word)
+std::string MachineFour::encryptWord(std::string word) //see above
 {
 	std::string returnable;
 	for (char letter : word) {

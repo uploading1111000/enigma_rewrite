@@ -7,7 +7,7 @@ SolverMachineFour::SolverMachineFour(MachineSpecificationFour& spec, std::option
 	analyser = analyserIn;
 	ciphertext = vectorFromString(ciphertextStr);
 }
-float SolverMachineFour::findBestRotors() {
+float SolverMachineFour::findBestRotors() { //most of algorithm explained in solvermachine.cpp
 	maxSetting4 max{ {},{},0 };
 	size_t numberOfRotors = this->getSpecification()->getRotorLength();
 	int totalL = numberOfRotors * (numberOfRotors - 1) * (numberOfRotors - 2);
@@ -20,13 +20,12 @@ float SolverMachineFour::findBestRotors() {
 			for (int r = 0; r < numberOfRotors; r++) {
 				if (r == l || r == m) continue;
 				setRotor(right, r);
-				for (int p = 1; p < 27; p++) {
+				for (int p = 1; p < 27; p++) { //best 4th rotor position needs to be found also. 4th rotor rarely changed ID, so id solving done in other method
 					MachineFour::rotor4.setPosition(p);
 					maxPosition best = findBestPositions();
-					//std::cout << best.second << " " << rotors[left].getRotorID() << " " << rotors[middle].getRotorID() << " " << rotors[right].getRotorID() << "\n";
+					std::cout << best.second << " " << rotors[left].getRotorID() << " " << rotors[middle].getRotorID() << " " << rotors[right].getRotorID() << "\n";
 					std::cout << j++ << " / " << totalL << "\n";
 					if (best.score > max.score) {
-						//std::cout << best.first[0] << " " << best.first[1] << " " << best.first[2] << "\n";
 						max = { {l,m,r,rotor4.getID()},{best.pos[0],best.pos[1],best.pos[2],p},best.score};
 					}
 				}
@@ -45,9 +44,9 @@ float SolverMachineFour::findBestRotors() {
 float SolverMachineFour::findBestRotorsWith4()
 {
 	maxSetting4 max{ {},{},0 };
-	for (int i = 0; i < this->getSpecification()->getRotorFourSize(); i++) {
+	for (int i = 0; i < this->getSpecification()->getRotorFourSize(); i++) {//iterates over the rotor4IDs if need be
 		setRotorFour(i);
-		float score = findBestRotors();
+		float score = findBestRotors(); //calls best rotors, and gets the score from there
 		if (score > max.score) {
 			max = { 
 				{rotors[left].getID(),rotors[middle].getID(),rotors[right].getID(),i},
@@ -57,7 +56,7 @@ float SolverMachineFour::findBestRotorsWith4()
 		};
 	}
 	for (int i = 0; i < 3; i++) {
-		rotors[i] = this->getSpecification()->getRotor(max.rotors[i]);
+		rotors[i] = this->getSpecification()->getRotor(max.rotors[i]); //BAD ROTOR SET
 		rotors[i].setPosition(max.pos[i]);
 	}
 	setRotorFour(max.rotors[3]);

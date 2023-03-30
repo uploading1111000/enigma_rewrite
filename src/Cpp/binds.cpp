@@ -7,13 +7,16 @@
 #include "indexOfCoincidence.h"
 namespace py  = pybind11;
 
+//pybind modules are wrapped in the PYBIND11_MODULE macro
 PYBIND11_MODULE(binds, m){
+	//pybind classes follow format py::class_<C++ class>(m, name).def(functionname,functionreference).def(...)...
 	py::class_<MachineSpecification>(m, "MachineSpecification")
 		.def(py::init<std::string>())
 		.def("getName", &MachineSpecification::getName)
 		.def("getN", &MachineSpecification::getN)
 		.def("getRotorIDs",&MachineSpecification::getRotorIDs);
 	py::class_<Machine>(m, "Machine")
+		//pyargs allow arguments to have default values, and names on the python side.
 		.def(py::init<MachineSpecification&, std::array<int, 3>, int, std::vector<std::array<char, 2>>>(), py::arg("spec"),
 			py::arg("rotorIds") = std::array<int, 3>{0, 1, 2}, py::arg("reflector") = 1, py::arg("plugboard") = std::vector<std::array<int, 3>>{})
 		.def("encryptWord", static_cast<std::string(Machine::*)(std::string)>(&Machine::encryptWord))
@@ -24,6 +27,7 @@ PYBIND11_MODULE(binds, m){
 		.def("setRings", &Machine::setRings)
 		.def("setRing", &Machine::setRing)
 		.def("setRotors", &Machine::setRotors)
+		//overloaded functions (those with mutliple definitions depending on arguments) have to be selected specifically with a static class when binding
 		.def("setRotor", static_cast<void (Machine::*)(int, int)>(&Machine::setRotor))
 		.def("setPlugboard",&Machine::setPlugboard)
 		.def("getWiring", &Machine::getWiring)

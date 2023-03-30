@@ -5,6 +5,7 @@
 #include "machine.h"
 #include "machine.h"
 
+//converts take a character and convert to 1-26 or the other way
 inline int convert(char in) {
 	return (int) in - 64;
 }
@@ -16,16 +17,15 @@ inline char convert(int in) {
 Machine::Machine(MachineSpecification& spec, std::array<int, 3> rotorIds, int reflectorId, std::vector<std::array<char, 2>> plugboardPairs)
 {
 	specification = &spec;
-	setRotors(rotorIds);
+	setRotors(rotorIds); //important to use this instead of just setting the rotors directly
 	reflector = specification->getReflector(reflectorId);
 	plugboard = Plugboard(plugboardPairs);
 }
 
 void Machine::incrementRotor(int N) {
-	int curr = rotors[N].getID();
-	curr++;
-	std::cout << this->getSpecification()->getRotorLength() << "\n";
-	if (curr >= this->getSpecification()->getRotorLength()) {
+	int curr = rotors[N].getID(); //current id
+	curr++; //increment
+	if (curr >= this->getSpecification()->getRotorLength()) { //wrap around
 		curr = 0;
 	}
 	setRotor(N, curr);
@@ -70,7 +70,7 @@ void Machine::setRotor(Place place, int id)
 
 void Machine::setRotor(int place, int id)
 {
-	switch (place) {
+	switch (place) { //have to use a switch because i had errors when converting an int to a place, but not the other way for some reason
 	case 0:
 		rotors[place] = Rotor(this->getSpecification()->getRotor(id), left);
 		break;
@@ -94,7 +94,7 @@ void Machine::setRotors(std::array<int,3> ids)
 	}
 }
 
-void Machine::mutateRotors()
+void Machine::mutateRotors()  //mutates are chained into one another, with the result from each mutate determining whether to rotate the next
 {
 	rotors[left].mutate(
 		rotors[middle].mutate(
@@ -105,30 +105,30 @@ void Machine::mutateRotors()
 
 int Machine::encryptLetter(int start)
 {
-	mutateRotors();
-	int plugF = plugboard.Transform(start);
-	int rightF = rotors[right].Transform(plugF);
+	mutateRotors();                                         //mutate
+	int plugF = plugboard.Transform(start);                 //plugboard forward
+	int rightF = rotors[right].Transform(plugF);            //rotors forward
 	int middleF = rotors[middle].Transform(rightF);
 	int leftF = rotors[left].Transform(middleF);
 	//int fourthF = rotorFour.Transform(leftF)
-	int reflected = reflector.Transform(leftF);
+	int reflected = reflector.Transform(leftF);             //reflector
 	//int fourthR = rotorFour.TransformReverse(reflected)
-	int leftR = rotors[left].TransformReverse(reflected);
+	int leftR = rotors[left].TransformReverse(reflected);   //rotors backward
 	int middleR = rotors[middle].TransformReverse(leftR);
 	int rightR = rotors[right].TransformReverse(middleR);
-	return plugboard.TransformReverse(rightR);
+	return plugboard.TransformReverse(rightR);              //plugboard backward and return
 }
 
-char Machine::encryptLetter(char letter)
+char Machine::encryptLetter(char letter) //wrapper around the int method, converting letters to integers and back
 {
 	int start = convert(letter);
 	int out = start;
-	if (start > 0 and start < 27) out = this->encryptLetter(start);
-	else if (start > 32 and start < 59) out = this->encryptLetter(start - 32);
+	if (start > 0 and start < 27) out = this->encryptLetter(start);     //capitals
+	else if (start > 32 and start < 59) out = this->encryptLetter(start - 32);  //lower case
 	return convert(out);
 }
 
-std::vector<int> Machine::encryptWord(std::vector<int> input)
+std::vector<int> Machine::encryptWord(std::vector<int> input)  //wrapper around int method, performing encrypt on each int
 {
 	std::vector<int> returnable;
 	for (int start : input) {
@@ -138,7 +138,7 @@ std::vector<int> Machine::encryptWord(std::vector<int> input)
 	return returnable;
 }
 
-std::string Machine::encryptWord(std::string word)
+std::string Machine::encryptWord(std::string word)   //wrapper around int method, through char method
 {
 	std::string returnable;
 	for (char letter : word) {
@@ -147,11 +147,11 @@ std::string Machine::encryptWord(std::string word)
 	return returnable;
 }
 
-std::vector<int> Machine::encryptLetterVerbose(int start)
+std::vector<int> Machine::encryptLetterVerbose(int start)  //visualiser method
 {
-	std::vector<int> returnable;
-	returnable.push_back(start);
-	mutateRotors();
+	std::vector<int> returnable;  //returnable is the vector of letters the decryption goes through
+	returnable.push_back(start);  //after each encryption step the letter is pushed to end of returnable
+	mutateRotors();               //otherwise the same as the normal int encrypt
 	int plugF = plugboard.Transform(start);
 	returnable.push_back(plugF);
 	int rightF = rotors[right].Transform(plugF);
@@ -160,10 +160,10 @@ std::vector<int> Machine::encryptLetterVerbose(int start)
 	returnable.push_back(middleF);
 	int leftF = rotors[left].Transform(middleF);
 	returnable.push_back(leftF);
-	returnable.push_back(leftF);
+	returnable.push_back(leftF);       //double push back to make same length as 4 rotors for visualisation
 	//int fourthF = rotorFour.Transform(leftF)
 	int reflected = reflector.Transform(leftF);
-	returnable.push_back(reflected);
+	returnable.push_back(reflected);   //double push back to make same length as 4 rotors for visualisation
 	returnable.push_back(reflected);
 	//int fourthR = rotorFour.TransformReverse(reflected)
 	int leftR = rotors[left].TransformReverse(reflected);
@@ -177,7 +177,7 @@ std::vector<int> Machine::encryptLetterVerbose(int start)
 	return returnable;
 }
 
-std::string Machine::encryptLetterVerbose(char letter)
+std::string Machine::encryptLetterVerbose(char letter) //wrapper around int visualiser encrypt
 {
 	int start = convert(letter);
 	std::vector<int> result = this->encryptLetterVerbose(start);
@@ -189,20 +189,20 @@ std::string Machine::encryptLetterVerbose(char letter)
 }
 
 std::array<int, 26> Machine::getWiring(int N) {
-	if (N == 0) {
+	if (N == 0) { //reflector
 		return sequential;
 	}
-	else if (N == 1) {
+	else if (N == 1) { //4th rotor
 		return this->getFourth();
 	}
 	else if (N >= 2 && N <= 4) {
-		std::array<int,26> normal = rotors[N - 2].getWiring();
+		std::array<int,26> normal = rotors[N - 2].getWiring(); 
 		std::array<int, 26> returnable;
-		for (int i = 1; i < 27; i++) {
-			int indexA = i - rotors[N-2].getPosition() + rotors[N-2].getRingPosition();
-			int indexB = normal[i-1] - rotors[N-2].getPosition() + rotors[N-2].getRingPosition();
+		for (int i = 1; i < 27; i++) {         //wiring internally is stack (doesn't account for position) so each letter needs to be
+			int indexA = i - rotors[N-2].getPosition() + rotors[N-2].getRingPosition();  //moved downward by position and upward by rings
+			int indexB = normal[i-1] - rotors[N-2].getPosition() + rotors[N-2].getRingPosition(); //on both sides, indexA = start, indexB = end of wire
 			normalise(indexA);
-			normalise(indexB);
+			normalise(indexB); //normalised back to 1-26
 			returnable[indexA - 1] = indexB;
 		}
 		return returnable;
@@ -213,9 +213,9 @@ std::array<int, 26> Machine::getWiring(int N) {
 }
 
 void Machine::incrementPosition(int N) {
-	int prePos = rotors[N].getPosition() + 1;
-	normalise(prePos);
-	rotors[N].setPosition(prePos);
+	int prePos = rotors[N].getPosition() + 1;  //take position
+	normalise(prePos);                         //normalise
+	rotors[N].setPosition(prePos);             //set
 }
 
 void Machine::decrementPosition(int N) {
@@ -245,8 +245,8 @@ std::vector<int> Machine::getTurnpoints(int N) {
 	std::array<int, 2> raw = rotors[N].getTurnpoints();
 	std::vector<int> returnable;
 	for (int val : raw) {
-		if (val != 0) {
-			int real = val - rotors[N].getPosition();
+		if (val != 0) { //0 is used to note a turnpoint that doesn't exist, as turnpoints are stored as 2 numbers
+			int real = val - rotors[N].getPosition();  //turnpoints are static, so much be adjusted in line with the position
 			normalise(real);
 			returnable.push_back(real);
 		}

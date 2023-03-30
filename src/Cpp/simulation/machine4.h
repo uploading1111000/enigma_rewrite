@@ -3,7 +3,7 @@
 #pragma once
 class MachineFour : virtual public Machine {
 private:
-	MachineSpecificationFour* specification;
+	MachineSpecificationFour* specification; //hides the underlying MachineSpecification pointer, this means getSpecification must be used to access specification
 protected:
 	Rotor rotor4;
 public:
